@@ -3,29 +3,31 @@
 import axios from "axios";
 
 export const searchGamesByTitle = async (title) => {
- let results = [];
- if(!title){
-  throw new Error ("Must provide a title");
- }
- if(typeof title !== 'string'){
-  throw new Error ("title must be a non empty string");
- }
- title = title.trim();
- if(title.length === 0){
-  throw new Error ("title must be a non empty string");
- }
- for(let pg = 1; pg <= 5; pg++){
-  let result = await axios.get(``)
-  if(result.data.Response == 'False'){
-    if(pg === 1){
-      throw new Error('No Games Found');
-    }
-    break;
-  } 
-  results = results.concat(result.data.Search);
-}
-return results 
-};
+  if(!title){
+   throw new Error ("Must provide a title");
+  }
+  if(typeof title !== 'string'){
+   throw new Error ("title must be a non empty string");
+  }
+  title = title.trim();
+  if(title.length === 0){
+   throw new Error ("title must be a non empty string");
+  }
+  
+   let results = await axios.post(`https://api.igdb.com/v4/games`,`fields name,genres.name,cover.url; search "${title}";`,{ method: 'POST',
+     headers: {
+       'Accept': 'application/json',
+       'Client-ID': '8d4vvrtlxxo5feemdcm1o04gc9ey5v',
+       'Authorization': 'Bearer v198v1d300ceazaf8t4vyeikjr7xyp',
+     },
+ }).then(function (response) {
+   console.log(response.data);
+ })
+ .catch(function (error) {
+   console.log(error);
+ });
+ return results.data; 
+ };
 
 export const getGameById = async (id) => {
  if(!id){
