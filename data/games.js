@@ -1,5 +1,4 @@
 
-
 import axios from "axios";
 
 export const searchGamesByTitle = async (title) => {
@@ -20,15 +19,9 @@ export const searchGamesByTitle = async (title) => {
        'Client-ID': '8d4vvrtlxxo5feemdcm1o04gc9ey5v',
        'Authorization': 'Bearer v198v1d300ceazaf8t4vyeikjr7xyp',
      },
- }).then(function (response) {
-   console.log(response.data);
  })
- .catch(function (error) {
-   console.log(error);
- });
- return results.data; 
+   return results.data;
  };
-
 export const getGameById = async (id) => {
  if(!id){
   throw new Error ("Must provide a id");

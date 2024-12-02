@@ -1,7 +1,7 @@
 //import express and express router as shown in lecture code and worked in previous labs.  Import your data functions from /data/movies.js that you will call in your routes below
 import express from 'express';
 const router = express.Router();
-import * as moviesData from '../data/games.js'
+import * as gamesData from '../data/games.js'
 import validation from '../helpers.js'
 router.route('/').get(async (req, res) => {
   //code here for GET will render the home handlebars file
@@ -15,20 +15,15 @@ router.route('/').get(async (req, res) => {
 
 router.route('/gameSearch').post(async (req, res) => {
   //code here for POST this is where your form will be submitting searchByTitle and then call your data function passing in the searchByTitle and then rendering the search results of up to 50 Movies.
-  let movie = req.body.searchByTitle;
+  let game = req.body.searchByTitle;
+
   try{
-  movie = validation.checkString(movie,'Game Title');
-  try{
-    let searchResults = await moviesData.searchGamesByTitle(movie);
-    res.render('searchResults',{movies: searchResults, movie});
+    let results = await gamesData.searchGamesByTitle(game);
+    console.log('Search results:', results);
+    res.render('searchResults',{games: results, game});
   }
   catch(e){ 
-    res.status(404).render('searchResults',{movie});
-  }
-  }
-  catch(e){
-    res.status(400);
-    res.render('searchResults',{movie: 0});
+    res.status(404).render('searchResults',{game});
   }
 });
 
@@ -38,8 +33,8 @@ router.route('/getGame/:id').get(async (req, res) => {
   try{
     id = validation.checkString(id, 'gameId');
     try{
-      let movieInfo = await moviesData.getGameById(id);
-      res.render('getgame', {movie: movieInfo});
+      let gameInfo = await gamesData.getGameById(id);
+      res.render('getgame', {game: gameInfo});
     }
     catch(e){
       res.status(404).render('getgame',{movie: ''});

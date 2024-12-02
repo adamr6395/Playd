@@ -1,2 +1,31 @@
+    
+
+    {{#if games}}
+    <title>Search Results</title>
+    <h1>Games Found</h1>
+    <h2>{{game}}</h2>
+    <main>
+        <ol>
+             {{#each games}}
+             <article class = "game">
+        <li>
+            {{this.name}} <br>
+           {{#if (eq this.Poster)}}
+                        <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
+                    {{else}}
+                        <img alt="{{this.name}} Poster" src="https:{{this.cover.url}}">
+                    {{/if}}
+          </a>
+        </li>
+        </article>
+             {{/each}}
+        </ol>
+        <a href="/">Search for Another game</a>
+    </main>
+    {{else}}
+    <p class="game-not-found">We're sorry, but no results were found for {{game}}.</p>
+    <a href="/">Search for Another Game</a>
+    {{/if}}
+
 
 
