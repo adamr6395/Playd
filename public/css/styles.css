@@ -1,0 +1,40 @@
+/*This file should have 10 CSS rulesets */
+html{
+    background-color: rgb(185, 183, 183);
+}
+.getResultImage{
+    width: 150px;
+    height: 234px;
+}
+h1{
+    font-size: xx-large;
+    
+}
+h2{
+    text-decoration: underline;
+}
+h3{
+    text-decoration: underline;
+}
+img{
+    width: 75px;
+    height: 117px;
+}
+dt{
+    font-weight: bold;
+   
+}
+p.error{
+    color: red;
+    font-size: xx-large;
+}
+.movie_not_found{
+    color: red;
+    font-size: xx-large;
+}
+a:link{
+    color: black;
+}
+a:visited{
+    color: black;
+}
