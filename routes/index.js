@@ -5,7 +5,11 @@ const constructorMethod = (app) => {
   app.use('/', gameRoutes);
 
   app.use('*', (req, res) => {
-    res.status(404).json({error: 'Route Not found'});
+    res.status(404).render('error', {
+      isServerError: true,
+      title:"error",
+      errorMessage: "Route Not found"
+    });
   });
 };
 
