@@ -1,0 +1,22 @@
+<a href="/">Search for Another Game</a>
+<article>
+    <h1>{{game.name}}</h1>
+    {{#if game.cover}}
+        <img alt="{{this.name}} Poster" src="https:{{game.cover.url}}">
+    {{else}}
+        <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
+    {{/if}}
+    <h2>Description</h2>
+    <p>{{game.summary}}</p>
+
+    <section>
+        <h3>Info</h3>
+        <dl>
+            <dt>Genres:</dt>
+            <dd>{{game.genres}}</dd>
+                    
+            <dt>Rating:</dt>
+            <dd>{{game.rating}}</dd>
+        </dl>
+    </section>
+</article>

@@ -33,9 +33,12 @@ export const getGameById = async (id) => {
  if(id.length === 0){
   throw new Error ("id must be a non empty string");
  }
- let result = await axios.get (``);
- if(result.data.Response == 'False'){
-  throw new Error('No Game Found');
- }
+ let result = await axios.post(`https://api.igdb.com/v4/games`,`fields id,name, genres, summary, rating, cover.url; where id = ${id};`,{ method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Client-ID': '8d4vvrtlxxo5feemdcm1o04gc9ey5v',
+    'Authorization': 'Bearer v198v1d300ceazaf8t4vyeikjr7xyp',
+  },
+})
  return result.data;
 };

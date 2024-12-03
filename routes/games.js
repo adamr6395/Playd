@@ -19,29 +19,37 @@ router.route('/gameSearch').post(async (req, res) => {
 
   try{
     let results = await gamesData.searchGamesByTitle(game);
+    if(!results || results.length === 0){
+      return res.status(404).render('error', {
+        isNotFoundError: true,
+        title:"error",
+        errorMessage: `We're sorry, but no results were found for "${game}".`
+      });
+    }
     console.log('Search results:', results);
     res.render('searchResults',{games: results, game});
   }
   catch(e){ 
-    res.status(404).render('searchResults',{game});
+    res.status(500).render('error', {
+      isServerError: true,
+      title:"error",
+      errorMessage: e.message || "An unexpected error occurred."
+    });
   }
 });
 
 router.route('/getGame/:id').get(async (req, res) => {
-  //code here for GET a single movie
   let id = req.params.id
   try{
-    id = validation.checkString(id, 'gameId');
-    try{
-      let gameInfo = await gamesData.getGameById(id);
-      res.render('getgame', {game: gameInfo});
-    }
-    catch(e){
-      res.status(404).render('getgame',{movie: ''});
-    }
+    let [gameInfo] = await gamesData.getGameById(id);
+    res.render('getgame', {game: gameInfo});
   }
   catch(e){
-    res.status(400).json({error: 'Invalid input'});
+    return res.status(404).render('error', {
+      isServerError: true,
+      title:"error",
+      errorMessage: "No Game found with that id"
+    });
   }
 });
 

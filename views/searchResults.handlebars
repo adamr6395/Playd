@@ -8,16 +8,16 @@
         <ol>
              {{#each games}}
              <article class = "game">
-        <li>
-            {{this.name}} <br>
-           {{#if (eq this.Poster)}}
-                        <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
-                    {{else}}
-                        <img alt="{{this.name}} Poster" src="https:{{this.cover.url}}">
-                    {{/if}}
-          </a>
-        </li>
-        </article>
+            <li>
+                <a href="/getGame/{{this.id}}">
+                {{this.name}} <br>
+                {{#if this.cover}}
+                    <img alt="{{this.name}} Poster" src="https:{{this.cover.url}}">
+                {{else}}
+                    <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
+                {{/if}}
+                </a>
+            </li>
              {{/each}}
         </ol>
         <a href="/">Search for Another game</a>

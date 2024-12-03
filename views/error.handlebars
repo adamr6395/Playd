@@ -1,2 +1,16 @@
+<header>
+    <h1>Error</h1>
+</header>
 
+{{#if isEmptyError}}
+    <p class="error">{{errorMessage}}</p>
+{{else if isNotFoundError}}
+    <p class="movie-not-found">{{errorMessage}}</p>
+{{else if isServerError}}
+    <p class="error">{{errorMessage}}</p>
+{{else}}
+    <p class="error">An unexpected error occurred.</p>
+{{/if}}
+
+<a href="/">Search for Another Game</a>
 
