@@ -42,7 +42,7 @@ export const searchGamesByTitle = async (title) => {
  };
 export const getGameById = async (id) => {
   const gamesCollection = await games();
-  const game = await gamesCollection.findOne({game_id: id});
+  const game = await gamesCollection.findOne({game_id: Number(id)});
  if(game === null){
  if(!id){
   throw new Error ("Must provide a id");
