@@ -2,6 +2,7 @@
 import express from 'express';
 const router = express.Router();
 import * as gamesData from '../data/games.js'
+import * as reviewsData from '../data/reviews.js'
 import validation from '../helpers.js'
 router.route('/').get(async (req, res) => {
   //code here for GET will render the home handlebars file
@@ -51,6 +52,20 @@ router.route('/getGame/:id').get(async (req, res) => {
     });
   }
 });
-
+router.route('/getGame/:id').post(async (req, res) => {
+  let id = req.params.id
+  let {stars,review} = req.body;
+  try{
+    let gameInfo = await reviewsData.addReview(id,Number(stars),review);
+    res.render('getgame', {game: gameInfo});
+  }
+  catch(e){
+    return res.status(404).render('error', {
+      isServerError: true,
+      title:"error",
+      errorMessage: "No Game found with that id"
+    });
+  }
+});
 //export router
 export default router;

@@ -1,6 +1,7 @@
 import { games } from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import axios from "axios";
+
 export const createGame = async (game_id,name,cover,genres,summary,rating) => {
   let newGame = {
     game_id,
