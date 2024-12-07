@@ -2,7 +2,7 @@
 <article>
     <h1>{{game.name}}</h1>
     {{#if game.cover}}
-        <img alt="{{this.name}} Poster" src="https:{{game.cover.url}}">
+        <img alt="{{this.name}} Poster" src="https:{{game.cover}}">
     {{else}}
         <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
     {{/if}}

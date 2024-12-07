@@ -26,7 +26,6 @@ router.route('/gameSearch').post(async (req, res) => {
         errorMessage: `We're sorry, but no results were found for "${game}".`
       });
     }
-    console.log('Search results:', results);
     res.render('searchResults',{games: results, game});
   }
   catch(e){ 
@@ -41,7 +40,7 @@ router.route('/gameSearch').post(async (req, res) => {
 router.route('/getGame/:id').get(async (req, res) => {
   let id = req.params.id
   try{
-    let [gameInfo] = await gamesData.getGameById(id);
+    let gameInfo = await gamesData.getGameById(id);
     res.render('getgame', {game: gameInfo});
   }
   catch(e){
