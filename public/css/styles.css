@@ -44,9 +44,9 @@ a:visited{
   }
   
   .stars {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: flex;
-    flex-direction: row-reverse; /* this is the magic */
+    flex-direction: row-reverse;
     justify-content: flex-end;
   }
   
@@ -55,24 +55,23 @@ a:visited{
   }
   
   .stars label {
-    font-size: 24px;
+    font-size: 36px;
     cursor: pointer;
   }
   
   .stars label:hover,
-  .stars label:hover ~ label { /* reason why the stars are in reverse order in the html */
-    color: orange;
-  }
-  
+  .stars label:hover ~ label,
   .stars input:checked ~ label {
     color: orange;
   }
   
+  
   .review {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   .review textarea {
-    width: 150px;
+    width: 250px;
     height: 100px;
   }
+  

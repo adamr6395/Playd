@@ -17,5 +17,23 @@ export const addReview = async (id,stars,review) => {
     );
     if (!updatedInfo) throw new Error( `Could not update the game with id ${id}`);
     let game = await getGameById(id);
+    let newTotal = game.total + stars;
+    let avg = 0
+    if(game.reviews.length === 0){
+         avg = newTotal;
+    }
+    else{
+         avg = newTotal/game.reviews.length;
+    }
+    if(Math.trunc(avg) !== avg){
+        avg = avg.toFixed(2);
+    }
+    let newAvg = `${avg}/5`;
+     updatedInfo = await gamesCollection.findOneAndUpdate(
+        {game_id: Number(id)},
+        {$set: {score: newAvg,total:newTotal}}
+    );
+    if (!updatedInfo) throw new Error( `Could not update the game with id ${id}`);
+    game = await getGameById(id);
     return game;
 }
