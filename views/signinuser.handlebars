@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{Title}}</title>
+        <link rel="stylesheet" href="/public/css/styles.css">
+    </head>
+    <body>
+        <header>
+                <nav>
+                    <ul>
+                        {{!-- <li><a id="homeLink" href="/home">Home Page</a></li>
+                        <li><a id="signInLink" href="/signinuser">Sign In Page</a></li>
+                        <li><a id="userLink" href="/user">User Page</a></li> --}}
+                    </ul>
+                </nav>
+        </header>
+        <main>
+            <form id="signin-form" action="/signinuser" method="POST">
+                <label for="userId">User ID:</label>
+                <input type="text" id="userId" name="userId" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button id="submit_button" type="submit">Sign In</button>
+            </form>
+            <p><a href="/signupuser">Click here to signup!</a></p>
+            <div class="error-messages"></div>
+        </main>
+    </body>
+</html>

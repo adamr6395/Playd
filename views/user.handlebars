@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{Title}}</title>
+        <link rel="stylesheet" href="/public/css/styles.css">
+    </head>
+    <body>
+        <header>
+                <nav>
+                    <ul>
+                        {{!-- <li><a id="homeLink" href="/home">Home Page</a></li>
+                        <li><a id="signInLink" href="/signinuser">Sign In Page</a></li>
+                        <li><a id="userLink" href="/user">User Page</a></li> --}}
+                    </ul>
+                </nav>
+        </header>
+        <main>
+            <div id="userView">
+                <p id="welcome">Welcome {{firstName}} {{lastName}}, the time is now: {{currentTime}} and the current date is {{currentDate}}.</p>
+                <a id="signoutLink" href="/signoutuser">Sign out</a>
+            </div>
+        </main>
+    </body>
+</html>

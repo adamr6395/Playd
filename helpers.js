@@ -28,4 +28,26 @@ const exportedMethods = {
   }
 };
 
+export const validateFirstName = (firstName) => {
+  if (typeof firstName !== 'string' || firstName.length < 2 || firstName.length > 25 || !firstName) 
+      throw "Error: firstName must be a non-empty string between 2 and 25 characters";
+}
+
+export const validateLastName = (lastName) => {
+  if (typeof lastName !== 'string' || lastName.length < 2 || lastName.length > 25 || !lastName) 
+      throw "Error: lastName must be a non-empty string between 2 and 25 characters";
+}
+
+export const validateUserId = (userId) => {
+  if (typeof userId !==  'string' || userId.length < 5 || userId.length > 10 || !userId) 
+      throw "Error: userId must be a non-empty string between 5 and 10 characters";
+}
+
+export const validatePassword = (password) => {
+  if (typeof password !== 'string' || password.length < 8 || !password) 
+      throw "Error: password must be a non-empty string over 8 characters";
+  if (!/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) 
+      throw "Error: password must include at least one uppercase letter, one number and one special character.";  
+}
+
 export default exportedMethods;

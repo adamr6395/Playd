@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{Title}}</title>
+        <link rel="stylesheet" href="/public/css/styles.css">
+    </head>
+    <body>
+        <header>
+                <nav>
+                    <ul>
+                        {{!-- <li><a id="homeLink" href="/home">Home Page</a></li>
+                        <li><a id="signInLink" href="/signinuser">Sign In Page</a></li>
+                        <li><a id="userLink" href="/user">User Page</a></li> --}}
+                    </ul>
+                </nav>
+        </header>
+        <main>
+            <form id="signup-form" action="/signupuser" method="POST">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+                
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+                
+                <label for="userId">User ID:</label>
+                <input type="text" id="userId" name="userId" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                
+                <button id="submitButton" type="submit">Sign Up</button>
+            </form>
+            <p><a href="/signinuser">Already have an account? Click here to sign-in</a></p>
+            <div class="error-messages"></div>
+        </main>
+    </body>
+</html>

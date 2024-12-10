@@ -1,7 +1,9 @@
 //Here you will import route files and export them as used in previous labs
 import gameRoutes from './games.js';
+import authRoutes from "./auth_routes.js"
 
 const constructorMethod = (app) => {
+  app.use('/', gameRoutes);
   app.use('/', gameRoutes);
 
   app.use('*', (req, res) => {
