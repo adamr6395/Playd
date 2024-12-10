@@ -9,12 +9,13 @@
   },
   "author": "Adam Ray 20006384",
   "license": "MIT",
-  "description": "",
   "dependencies": {
-    "axios": "^1.7.7",
-    "express": "^4.21.1",
+    "axios": "^1.7.9",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
     "express-handlebars": "^8.0.1",
     "md5": "^2.3.0",
-    "mongodb": "^6.10.0"
-  }
+    "mongodb": "^6.12.0"
+  },
+  "description": ""
 }
