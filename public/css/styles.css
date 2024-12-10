@@ -38,3 +38,40 @@ a:link{
 a:visited{
     color: black;
 }
+.myForm {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .stars {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+  
+  .stars input {
+    display: none;
+  }
+  
+  .stars label {
+    font-size: 36px;
+    cursor: pointer;
+  }
+  
+  .stars label:hover,
+  .stars label:hover ~ label,
+  .stars input:checked ~ label {
+    color: orange;
+  }
+  
+  
+  .review {
+    margin-bottom: 10px;
+  }
+  
+  .review textarea {
+    width: 250px;
+    height: 100px;
+  }
+  

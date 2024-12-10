@@ -2,7 +2,7 @@
 <article>
     <h1>{{game.name}}</h1>
     {{#if game.cover}}
-        <img alt="{{this.name}} Poster" src="https:{{game.cover.url}}">
+        <img alt="{{this.name}} Poster" src="https:{{game.cover}}">
     {{else}}
         <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
     {{/if}}
@@ -12,11 +12,48 @@
     <section>
         <h3>Info</h3>
         <dl>
-            <dt>Genres:</dt>
-            <dd>{{game.genres}}</dd>
-                    
+            <dt>Playd Rating: </dt>
+            <dd>{{game.score}}</dd>       
+
             <dt>Rating:</dt>
             <dd>{{game.rating}}</dd>
+            
+            <dt>Genres:</dt>
+            <dd>{{game.genres}}</dd>
         </dl>
+        {{#if game.reviews}}
+        <h4>Reviews: </h4>
+        <ul>
+            {{#each game.reviews}}
+                <li>
+                    <p>
+                        Rating: {{this.stars}}
+                    </p>
+                    <p>
+                        Review: {{this.review}}
+                    </p>
+                </li>
+            {{/each}}
+            </ul>
+        {{/if}}
     </section>
+    <form method="POST" id="myForm">
+		<label id = 'formLabel'>
+			Leave a review:
+		</label>
+            <div class="stars">
+                <input type="radio" id="5stars" name="stars" value="5">
+                <label for="5stars">&#9055;</label>
+                <input type="radio" id="4stars" name="stars" value="4">
+                <label for="4stars">&#9055;</label>
+                <input type="radio" id="3stars" name="stars" value="3">
+                <label for="3stars">&#9055;</label>
+                <input type="radio" id="2stars" name="stars" value="2">
+                <label for="2stars">&#9055;</label>
+                <input type="radio" id="1star" name="stars" value="1">
+                <label for="1star">&#9055;</label>
+            </div>
+             <div class="review"><textarea name="review" id="review"></textarea></div>
+			<button type="submit">Post</button>
+	</form>
 </article>
