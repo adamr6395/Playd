@@ -4,17 +4,9 @@ import session from 'express-session';
 const app = express();
 import configRoutes from './routes/index.js';
 import {create} from 'express-handlebars';
-import {
-  logMiddleware,
-  rootMiddleware,
-  signinMiddleware,
-  signupMiddleware,
-  userMiddleware,
-  adminMiddleware,
-  signoutMiddleware,
-  rewriteUnsupportedBrowserMethods
-} from './middleware.js';
+import * as middleware from './middleware.js';
 import authRoutes from './routes/auth_routes.js'
+
 
 const hbs = create({
   // Specify helpers which are only registered on this instance.
@@ -36,19 +28,19 @@ app.use(
 app.use('/public', express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(rewriteUnsupportedBrowserMethods);
+app.use(middleware.rewriteUnsupportedBrowserMethods);
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-app.use(logMiddleware);
-app.use(rootMiddleware);
+app.use(middleware.logMiddleware);
+app.use(middleware.rootMiddleware);
 
-app.use('/signinuser', signinMiddleware);
-app.use('/signupuser', signupMiddleware);
-app.use('/user', userMiddleware);
-app.use('/administrator', adminMiddleware);
-app.use('/signoutuser', signoutMiddleware);
+app.use('/signinuser', middleware.signinMiddleware);
+app.use('/signupuser', middleware.signupMiddleware);
+app.use('/user', middleware.userMiddleware);
+app.use('/administrator', middleware.adminMiddleware);
+app.use('/signoutuser', middleware.signoutMiddleware);
 
 app.use('/', authRoutes);
 

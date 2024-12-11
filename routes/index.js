@@ -3,8 +3,8 @@ import gameRoutes from './games.js';
 import authRoutes from "./auth_routes.js"
 
 const constructorMethod = (app) => {
-  app.use('/', gameRoutes);
-  app.use('/', gameRoutes);
+  app.use('/getgame', gameRoutes);
+  app.use('/signinuser', authRoutes);
 
   app.use('*', (req, res) => {
     res.status(404).render('error', {
