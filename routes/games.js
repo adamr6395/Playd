@@ -53,7 +53,7 @@ router.route('/getGame/:id').get(async (req, res) => {
   let id = req.params.id
   try{
     let gameInfo = await gamesData.getGameById(id);
-    res.render('getgame', {game: gameInfo,title:'getgame'});
+    res.render('getgame', {game: gameInfo,title:'getgame', user: req.session.user});
   }
   catch(e){
     return res.status(404).render('error', {
@@ -68,7 +68,7 @@ router.route('/getGame/:id').post(async (req, res) => {
   let {stars,review} = req.body;
   try{
     let gameInfo = await reviewsData.addReview(id,Number(stars),review);
-    res.render('getgame', { game: gameInfo, title:'getgame'});
+    res.render('getgame', { game: gameInfo, title:'getgame', user: req.session.user});
   }
   catch(e){
     return res.status(404).render('error', {
