@@ -35,13 +35,13 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.use(mw.logMiddleware);
-app.use(mw.rootMiddleware);
+// app.use(mw.rootMiddleware);
 
-app.use('/signinuser', mw.signinMiddleware);
-app.use('/signupuser', mw.signupMiddleware);
-app.use('/user', mw.userMiddleware);
+app.use('/signinuser', mw.redirectAuthenticated('/user'));
+app.use('/signupuser', mw.redirectAuthenticated('/user'));
+app.use('/user', mw.requireAuthentication('/signinuser'));
 // app.use('/administrator', mw.adminMiddleware);
-app.use('/signoutuser', mw.signoutMiddleware);
+app.use('/signoutuser', mw.requireAuthentication('/signinuser'));
 
 app.use('/', authRoutes);
 app.use('/', gameRoutes);
