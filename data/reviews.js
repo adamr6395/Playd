@@ -1,79 +1,91 @@
-import { users } from "../config/mongoCollections.js"
-import bcrypt from "bcryptjs"
-import { 
-    validateFirstName, 
-    validateLastName,
-    validateUserId,
-    validatePassword
-} from "../helpers.js"
+import { games } from '../config/mongoCollections.js';
+import { ObjectId } from 'mongodb';
+import axios from "axios";
+import { getGameById } from './games.js';
 
-const saltRounds = 1;
+export const addReview = async (id, stars, review) => {
 
-export const signUpUser = async (
-    firstName,
-    lastName,
-    userId,
-    password,
-) => {
-    firstName = firstName.trim()
-    lastName = lastName.trim()
-    userId = userId.trim()
-    password = password.trim()
+    if(typeof stars != "number") throw "stars suck";
+    if (typeof review != "string" || review.trim() == "") throw "review sucks";
 
-    await validateFirstName(firstName);
-    await validateLastName(lastName);
-    await validateUserId(userId);
-    await validatePassword(password);
+    review = review.trim();
 
-    userId = userId.toLowerCase();
-
-    const usersCollection = await users();
-
-    const existingUser = await usersCollection.findOne({ userId });
-    if (existingUser) 
-        throw "Error: a user with this userId already exists";
-
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    const newUser = {
-        firstName,
-        lastName,
-        userId,
-        password: hashedPassword,
-    };
-
-    const insertInfo = await usersCollection.insertOne(newUser);
-    console.log('Insert result:', insertInfo);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId) 
-        throw "Error: Could not add user";
-
-    console.log('Registration completed successfully.');
-    return {registrationCompleted: true};
+    let gamesCollection = await games();
+    let newReview =
+    {
+        game_id: Number(id),
+        stars: stars,
+        review: review.trim()
+    }
+    let updatedInfo = await gamesCollection.findOneAndUpdate(
+        { game_id: Number(id) },
+        { $push: { reviews: newReview } }
+    );
+    if (!updatedInfo) throw new Error(`Could not update the game with id ${id}`);
+    let game = await getGameById(id);
+    let newTotal = game.total + stars;
+    let avg = 0
+    if (game.reviews.length === 0) {
+        avg = newTotal;
+    }
+    else {
+        avg = newTotal / game.reviews.length;
+    }
+    if (Math.trunc(avg) !== avg) {
+        avg = avg.toFixed(2);
+    }
+    let newAvg = `${avg}/5`;
+    updatedInfo = await gamesCollection.findOneAndUpdate(
+        { game_id: Number(id) },
+        { $set: { score: newAvg, total: newTotal } }
+    );
+    if (!updatedInfo) throw new Error(`Could not update the game with id ${id}`);
+    game = await getGameById(id);
+    return game;
 };
 
+export const updateReview = async (gameId, reviewId, updatedReview) => {
+    const gamesCollection = await games();
+    const game = await gamesCollection.findOne({ game_id: Number(gameId) });
+    if (!game) throw new Error(`Game with ID ${gameId} not found.`);
 
+    const reviewIndex = game.reviews.findIndex(r => r._id.toString() === reviewId);
+    if (reviewIndex === -1) throw new Error(`Review with ID ${reviewId} not found.`);
 
-export const signInUser = async (
-    userId, 
-    password
-) => {
-    userId = userId.trim()
-    password = password.trim()
+    game.reviews[reviewIndex] = { ...game.reviews[reviewIndex], ...updatedReview };
 
-    await validateUserId(userId);  
-    await validatePassword(password);
+    const newTotal = game.reviews.reduce((sum, r) => sum + r.stars, 0);
+    const newAvg = (newTotal / game.reviews.length).toFixed(2);
 
-    const usersCollection = await users();
+    const updatedGame = await gamesCollection.findOneAndUpdate(
+        { game_id: Number(gameId) },
+        { $set: { reviews: game.reviews, total: newTotal, score: `${newAvg}/5` } },
+        { returnDocument: 'after' }
+    );
 
-    const user = await usersCollection.findOne({ userId: userId.toLowerCase() });  
-    if (!user) throw "Error: either the userId or password is invalid.";
+    if (!updatedGame.value) throw new Error('Could not update the review.');
+    return updatedGame.value;
+};
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) throw "Error: either the userId or password is invalid.";
+export const deleteReview = async (gameId, reviewId) => {
+    const gamesCollection = await games();
+    const game = await gamesCollection.findOne({ game_id: Number(gameId) });
+    if (!game) throw new Error(`Game with ID ${gameId} not found.`);
 
-    return {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        userId: user.userId,
-    };
+    const reviewIndex = game.reviews.findIndex(r => r._id.toString() === reviewId);
+    if (reviewIndex === -1) throw new Error(`Review with ID ${reviewId} not found.`);
+
+    const removedReview = game.reviews.splice(reviewIndex, 1)[0];
+
+    const newTotal = game.reviews.reduce((sum, r) => sum + r.stars, 0);
+    const newAvg = game.reviews.length ? (newTotal / game.reviews.length).toFixed(2) : '0.00';
+
+    const updatedGame = await gamesCollection.findOneAndUpdate(
+        { game_id: Number(gameId) },
+        { $set: { reviews: game.reviews, total: newTotal, score: `${newAvg}/5` } },
+        { returnDocument: 'after' }
+    );
+
+    if (!updatedGame.value) throw new Error('Could not delete the review.');
+    return removedReview;
 };
