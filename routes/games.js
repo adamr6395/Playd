@@ -7,7 +7,7 @@ import validation from '../helpers.js'
 router.route('/').get(async (req, res) => {
   //code here for GET will render the home handlebars file
   try{
-    res.render('home');
+    res.render('home', {title:'Playd'});
   }
   catch(e){
     res.status(500).json({error: 'cannot load page'});
@@ -27,7 +27,7 @@ router.route('/gameSearch').post(async (req, res) => {
         errorMessage: `We're sorry, but no results were found for "${game}".`
       });
     }
-    res.render('searchResults',{games: results, game});
+    res.render('searchResults',{title:'gameSearch',games: results, game});
   }
   catch(e){ 
     res.status(500).render('error', {
@@ -42,7 +42,7 @@ router.route('/getGame/:id').get(async (req, res) => {
   let id = req.params.id
   try{
     let gameInfo = await gamesData.getGameById(id);
-    res.render('getgame', {game: gameInfo});
+    res.render('getgame', {game: gameInfo,title:'getgame'});
   }
   catch(e){
     return res.status(404).render('error', {
@@ -57,7 +57,7 @@ router.route('/getGame/:id').post(async (req, res) => {
   let {stars,review} = req.body;
   try{
     let gameInfo = await reviewsData.addReview(id,Number(stars),review);
-    res.render('getgame', {game: gameInfo});
+    res.render('getgame', {game: gameInfo, title:'getgame'});
   }
   catch(e){
     return res.status(404).render('error', {

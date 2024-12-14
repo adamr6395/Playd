@@ -97,7 +97,7 @@ router.route('/user').get(async (req, res) => {
 router.route('/signoutuser').get(async (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-            return res.status(500).render('error', { error: 'Failed to log out.' });
+            return res.status(500).render('error', { error: 'Failed to log out.', title:'error' });
         }
         res.redirect('/signinuser');
     });

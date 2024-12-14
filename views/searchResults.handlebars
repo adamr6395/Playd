@@ -1,28 +1,23 @@
-    
-
     {{#if games}}
-    <title>Search Results</title>
     <h1>Games Found</h1>
     <h2>{{game}}</h2>
-    <main>
-        <ol>
-             {{#each games}}
-             <article class = "game">
+    <ol>
+        {{#each games}}
             <li>
-                <a href="/getGame/{{this.id}}">
-                {{this.name}} <br>
-                {{#if this.cover}}
-                    <img alt="{{this.name}} Poster" src="https:{{this.cover.url}}">
-                {{else}}
-                    <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
-                {{/if}}
-                </a>
+                <article class = "game">
+                    <a href="/getGame/{{this.id}}">
+                    <h3>{{this.name}}</h3>
+                    {{#if this.cover}}
+                        <img alt="{{this.name}} Poster" src="https:{{this.cover.url}}">
+                    {{else}}
+                        <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
+                    {{/if}}
+                    </a>
+                </article>
             </li>
-            </article>
-             {{/each}}
-        </ol>
-        <a href="/">Search for Another game</a>
-    </main>
+        {{/each}}
+    </ol>
+    <a href="/">Search for Another game</a>
     {{else}}
     <p class="game-not-found">We're sorry, but no results were found for {{game}}.</p>
     <a href="/">Search for Another Game</a>
