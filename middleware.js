@@ -12,13 +12,7 @@ const logMiddleware = (req, res, next) => {
 
 const rootMiddleware = (req, res, next) => {
     if (req.originalUrl === '/') {
-        if (req.session.user) {
-            if (req.session.user.role === 'admin') {
-                return res.redirect('/administrator');
-            }
-            return res.redirect('/user');
-        }
-        return res.redirect('/signinuser');
+        return res.redirect('/getgame');
     }
     next();
 };
@@ -49,6 +43,7 @@ const userMiddleware = (req, res, next) => {
     }
     next();
 }
+
 
 const adminMiddleware = (req, res, next) => {
     if (!req.session.user) {
@@ -90,5 +85,5 @@ export {
     userMiddleware,
     adminMiddleware,
     signoutMiddleware,
-    rewriteUnsupportedBrowserMethods
+    rewriteUnsupportedBrowserMethods,
 };  

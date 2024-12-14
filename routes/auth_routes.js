@@ -19,9 +19,9 @@ router
             return res.redirect('/signinuser');
         } else {
             return res.status(500).render('signupuser', {
-              error: 'Internal Server Error.',
-              data: req.body,
-              title:"Sign Up"
+                error: 'Internal Server Error.',
+                data: req.body,
+                title:"Sign Up"
             });
         }
         } catch (e) {
@@ -63,9 +63,9 @@ router
             error: e,
             data: { userId },
             title:"Sign In"
-          });
-        }
-    });
+        });
+    }
+});
 
 router.route('/user').get(async (req, res) => {
     const { firstName, lastName, role, favoriteQuote, themePreference } = req.session.user;

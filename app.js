@@ -4,8 +4,9 @@ import session from 'express-session';
 const app = express();
 import configRoutes from './routes/index.js';
 import {create} from 'express-handlebars';
-import * as middleware from './middleware.js';
-import authRoutes from './routes/auth_routes.js'
+import * as mw from './middleware.js';
+import authRoutes from './routes/auth_routes.js';
+import gameRoutes from './routes/games.js';
 
 
 const hbs = create({
@@ -28,21 +29,22 @@ app.use(
 app.use('/public', express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(middleware.rewriteUnsupportedBrowserMethods);
+app.use(mw.rewriteUnsupportedBrowserMethods);
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-app.use(middleware.logMiddleware);
-app.use(middleware.rootMiddleware);
+app.use(mw.logMiddleware);
+app.use(mw.rootMiddleware);
 
-app.use('/signinuser', middleware.signinMiddleware);
-app.use('/signupuser', middleware.signupMiddleware);
-app.use('/user', middleware.userMiddleware);
-app.use('/administrator', middleware.adminMiddleware);
-app.use('/signoutuser', middleware.signoutMiddleware);
+app.use('/signinuser', mw.signinMiddleware);
+app.use('/signupuser', mw.signupMiddleware);
+app.use('/user', mw.userMiddleware);
+app.use('/administrator', mw.adminMiddleware);
+app.use('/signoutuser', mw.signoutMiddleware);
 
 app.use('/', authRoutes);
+app.use('/', gameRoutes);
 
 configRoutes(app);
 
