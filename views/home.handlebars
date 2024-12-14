@@ -22,9 +22,11 @@ Also inside the main element, you will have a form; this form will POST to /movi
 <div>
   {{#each popularGames}}
     <div>
-      <img id="home_images" src="{{this.cover.url}}" alt="{{this.name}}">
-      <h3>{{this.name}}</h3>
-      <p>Rating: {{this.rating}}</p>
+      <a href="/getGame/{{this.id}}">
+        <img id="home_images" src="{{this.cover.url}}" alt="{{this.name}}">
+        <h3>{{this.name}}</h3>
+        <p>Rating: {{this.rating}}</p>
+      </a>
     </div>
   {{/each}}
 </div>
@@ -35,9 +37,11 @@ Also inside the main element, you will have a form; this form will POST to /movi
   <div>
     {{#each this}}
       <div>
-        <img id="home_images" src="{{this.cover.url}}" alt="{{this.name}}">
-        <h3>{{this.name}}</h3>
-        <p>Rating: {{this.rating}}</p>
+        <a href="/getGame/{{this.id}}">
+          <img id="home_images" src="{{this.cover.url}}" alt="{{this.name}}">
+          <h3>{{this.name}}</h3>
+          <p>Rating: {{this.rating}}</p>
+        </a>
       </div>
     {{/each}}
   </div>

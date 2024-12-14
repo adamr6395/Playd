@@ -7,7 +7,7 @@ import validation from '../helpers.js'
 router.route('/').get(async (req, res) => {
   //code here for GET will render the home handlebars file
   try{
-    const genres = ["Action", "Adventure", "Role-playing (RPG)", "Shooter"]; 
+    const genres = ["Adventure", "Shooter","Racing","Simulator","Puzzle","Indie"]; 
     let genreGames = {};
     for (let genre of genres) {
       genreGames[genre] = await gamesData.getGamesByGenre(genre);
