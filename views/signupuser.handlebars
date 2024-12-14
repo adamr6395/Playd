@@ -32,29 +32,14 @@
         <input type="password" id="confirmPassword" name="confirmPassword">
         <span class="error-message"></span>
     </div>
-    <div class="form-group">
-        <label for="favoriteQuote">Favorite Quote:</label>
-        <input type="text" id="favoriteQuote" name="favoriteQuote" value="{{data.favoriteQuote}}">
-        <span class="error-message"></span>
-    </div>
-    <div class="form-group">
-        <label for="backgroundColor">Background Color:</label>
-        <input type="color" id="backgroundColor" name="backgroundColor" value="{{data.backgroundColor}}">
-        <span class="error-message"></span>
-    </div>
-    <div class="form-group">
-        <label for="fontColor">Font Color:</label>
-        <input type="color" id="fontColor" name="fontColor" value="{{data.fontColor}}">
-        <span class="error-message"></span>
-    </div>
-    <div class="form-group">
+    {{!-- <div class="form-group">
         <label for="role">Role:</label>
         <select id="role" name="role">
             <option value="admin" {{#if (eq data.role "admin")}}selected{{/if}}>Admin</option>
             <option value="user" {{#if (eq data.role "user")}}selected{{/if}}>User</option>
         </select>
         <span class="error-message"></span>
-    </div>
+    </div> --}}
     <button type="submit" id="submitButton" name="submitButton">Sign Up</button>
 </form>
 
