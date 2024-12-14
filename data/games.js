@@ -4,20 +4,20 @@ import axios from "axios";
 
 export const createGame = async (game_id,name,cover,genres,summary,rating) => {
 
-  if (typeof name != "string") throw "name sucks";
-  if (typeof cover != "string") throw "cover sucks";
-  if (!Array.isArray(genres)) throw "genres suck";
-  if (typeof summary != "string") throw "summary sucks";
-  if (typeof rating != "number") throw "rating sucks";
+  // if (typeof name != "string") throw "name sucks";
+  // if (typeof cover != "string") throw "cover sucks";
+  // if (!Array.isArray(genres)) throw "genres suck";
+  // if (typeof summary != "string") throw "summary sucks";
+  // if (typeof rating != "number") throw "rating sucks";
 
-  name = name.trim();
-  cover = cover.trim();
-  summary = summary.trim();
+  // name = name.trim();
+  // cover = cover.trim();
+  // summary = summary.trim();
 
-  for(let i = 0; i < genres.length; i += 1){
-    if(typeof genres[i] != "string" || genres[i].trim() == "") throw "one of these genres sucks";
-    genres[i] = genres[i].trim();
-  }
+  // for(let i = 0; i < genres.length; i += 1){
+  //   if(typeof genres[i] != "string" || genres[i].trim() == "") throw "one of these genres sucks";
+  //   genres[i] = genres[i].trim();
+  // }
 
   let newGame = {
     game_id,
@@ -82,8 +82,17 @@ export const getGameById = async (id) => {
     })
     let game = result.data[0];
     //console.log(game);
-    let create = await createGame(game.id, game.name, game.cover.url, game.genres, game.summary, game.rating);
-    return create;
+    if (game.cover && game.cover.url) {
+      let create = await createGame(game.id, game.name, game.cover.url, game.genres, game.summary, game.rating);
+      return create;
+    } else {
+      // Handle the case where cover is missing
+      console.log("Cover image is missing for game ID:", game.id);
+      // Optionally, you can set a fallback URL for cover or handle the case differently
+      let fallbackCoverUrl = '/public/no_image.jpeg';
+      let create = await createGame(game.id, game.name, null, game.genres, game.summary, game.rating);
+      return create;
+    }
   }
   else {
     console.log('retreived from db');
