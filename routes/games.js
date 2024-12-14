@@ -7,7 +7,19 @@ import validation from '../helpers.js'
 router.route('/').get(async (req, res) => {
   //code here for GET will render the home handlebars file
   try{
-    res.render('home', {title:'Playd'});
+    const genres = ["Action", "Adventure", "Role-playing (RPG)", "Shooter"]; 
+    let genreGames = {};
+    for (let genre of genres) {
+      genreGames[genre] = await gamesData.getGamesByGenre(genre);
+    }
+
+    let popularGames = await gamesData.getPopularGames();
+
+    res.render('home', { 
+      title: 'Playd', 
+      genreGames: genreGames,
+      popularGames: popularGames 
+    });
   }
   catch(e){
     res.status(500).json({error: 'cannot load page'});

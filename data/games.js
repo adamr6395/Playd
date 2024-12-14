@@ -117,3 +117,35 @@ export const deleteGame = async (id) => {
   return deletedGame.value;
 };
 */
+export const getGamesByGenre = async (genre) => {
+  if (!genre) {
+    throw new Error("Must provide a genre");
+  }
+  genre = genre.trim();
+  if (genre.length === 0) {
+    throw new Error("Genre must be a non-empty string");
+  }
+
+  let results = await axios.post(`https://api.igdb.com/v4/games`, `fields name,genres.name,cover.url,rating; where genres.name = "${genre}";`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Client-ID': '8d4vvrtlxxo5feemdcm1o04gc9ey5v',
+      'Authorization': 'Bearer v198v1d300ceazaf8t4vyeikjr7xyp',
+    },
+  });
+  return results.data;
+};
+
+export const getPopularGames = async () => {
+  let results = await axios.post(`https://api.igdb.com/v4/games`, `fields name,genres.name,cover.url,rating; sort rating desc; limit 10;`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Client-ID': '8d4vvrtlxxo5feemdcm1o04gc9ey5v',
+      'Authorization': 'Bearer v198v1d300ceazaf8t4vyeikjr7xyp',
+    },
+  });
+  return results.data;
+};
+
