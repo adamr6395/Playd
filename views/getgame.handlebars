@@ -37,6 +37,7 @@
             </ul>
         {{/if}}
     </section>
+    {{#if user}}
     <form method="POST" id="myForm">
 		<label id = 'formLabel'>
 			Leave a review:
@@ -56,4 +57,5 @@
              <div class="review"><textarea name="review" id="review"></textarea></div>
 			<button type="submit">Post</button>
 	</form>
+    {{/if}}
 </article>

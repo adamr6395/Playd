@@ -19,19 +19,19 @@ const rootMiddleware = (req, res, next) => {
 
 const signinMiddleware = (req, res, next) => {
     if (req.session.user) {
-        if (req.session.user.role === 'admin') {
-            return res.redirect('/administrator');
-        }
-        return res.redirect('/user');
+        // if (req.session.user.role === 'admin') {
+        //     return res.redirect('/administrator');
+        // }
+        return res.redirect('/');
     }
     next();
 };
 
 const signupMiddleware = (req, res, next) => {
     if (req.session.user) {
-        if (req.session.user.role === 'admin') {
-            return res.redirect('/administrator');
-        }
+        // if (req.session.user.role === 'admin') {
+        //     return res.redirect('/administrator');
+        // }
         return res.redirect('/user');
     }
     next();
@@ -45,18 +45,18 @@ const userMiddleware = (req, res, next) => {
 }
 
 
-const adminMiddleware = (req, res, next) => {
-    if (!req.session.user) {
-        return res.redirect('/signinuser');
-    }
-    if (req.session.user.role !== 'admin') {
-        return res.status(403).render('error', {
-            error: 'You do not have permission to access this page.',
-            link: '/user',
-        });
-    }
-    next();
-}
+// const adminMiddleware = (req, res, next) => {
+//     if (!req.session.user) {
+//         return res.redirect('/signinuser');
+//     }
+//     if (req.session.user.role !== 'admin') {
+//         return res.status(403).render('error', {
+//             error: 'You do not have permission to access this page.',
+//             link: '/user',
+//         });
+//     }
+//     next();
+// }
 
 const signoutMiddleware = (req, res, next) => {
     if (!req.session.user) {
@@ -83,7 +83,7 @@ export {
     signinMiddleware,
     signupMiddleware,
     userMiddleware,
-    adminMiddleware,
+    // adminMiddleware,
     signoutMiddleware,
     rewriteUnsupportedBrowserMethods,
 };  

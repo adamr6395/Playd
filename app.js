@@ -40,7 +40,7 @@ app.use(mw.rootMiddleware);
 app.use('/signinuser', mw.signinMiddleware);
 app.use('/signupuser', mw.signupMiddleware);
 app.use('/user', mw.userMiddleware);
-app.use('/administrator', mw.adminMiddleware);
+// app.use('/administrator', mw.adminMiddleware);
 app.use('/signoutuser', mw.signoutMiddleware);
 
 app.use('/', authRoutes);
