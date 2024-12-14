@@ -6,7 +6,7 @@ import { getGameById } from './games.js';
 export const addReview = async (id, stars, review) => {
 
     if(typeof stars != "number") throw "stars suck";
-    if (typeof review != "string" || review.trim() == "") throw "review sucks";
+    if (typeof review != "string") throw "review sucks";
 
     review = review.trim();
 
