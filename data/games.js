@@ -4,21 +4,20 @@ import axios from "axios";
 
 export const createGame = async (game_id,name,cover,genres,summary,rating) => {
 
-  if (typeof name != "string" || name.trim() == "") throw "name sucks";
-  if (typeof cover != "string" || cover.trim() == "") throw "cover sucks";
-  if (typeof genres != "string" || genres.trim() == "") throw "genres suck";
-  if (typeof summary != "string" || summary.trim() == "") throw "summary sucks";
+  if (typeof name != "string") throw "name sucks";
+  if (typeof cover != "string") throw "cover sucks";
+  if (!Array.isArray(genres)) throw "genres suck";
+  if (typeof summary != "string") throw "summary sucks";
   if (typeof rating != "number") throw "rating sucks";
 
   name = name.trim();
   cover = cover.trim();
-  genres = genres.trim();
   summary = summary.trim();
 
-  /*for(let i = 0; i < genres.length; i += 1){
+  for(let i = 0; i < genres.length; i += 1){
     if(typeof genres[i] != "string" || genres[i].trim() == "") throw "one of these genres sucks";
     genres[i] = genres[i].trim();
-  }*/
+  }
 
   let newGame = {
     game_id,
