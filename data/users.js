@@ -1,7 +1,7 @@
 import { users } from "../config/mongoCollections.js"
 import bcrypt from "bcryptjs"
-import { 
-    validateFirstName, 
+import {
+    validateFirstName,
     validateLastName,
     validateUserId,
     validatePassword
@@ -30,7 +30,7 @@ export const signUpUser = async (
     const usersCollection = await users();
 
     const existingUser = await usersCollection.findOne({ userId });
-    if (existingUser) 
+    if (existingUser)
         throw "Error: a user with this userId already exists";
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -44,28 +44,28 @@ export const signUpUser = async (
 
     const insertInfo = await usersCollection.insertOne(newUser);
     console.log('Insert result:', insertInfo);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId) 
+    if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw "Error: Could not add user";
 
     console.log('Registration completed successfully.');
-    return {registrationCompleted: true};
+    return { registrationCompleted: true };
 };
 
 
 
 export const signInUser = async (
-    userId, 
+    userId,
     password
 ) => {
     userId = userId.trim()
     password = password.trim()
 
-    await validateUserId(userId);  
+    await validateUserId(userId);
     await validatePassword(password);
 
     const usersCollection = await users();
 
-    const user = await usersCollection.findOne({ userId: userId.toLowerCase() });  
+    const user = await usersCollection.findOne({ userId: userId.toLowerCase() });
     if (!user) throw "Error: either the userId or password is invalid.";
 
     const passwordMatch = await bcrypt.compare(password, user.password);
@@ -76,4 +76,22 @@ export const signInUser = async (
         lastName: user.lastName,
         userId: user.userId,
     };
+};
+
+export const updateUserProfile = async (userId, updates) => {
+    const usersCollection = await users();
+    const updatedUser = await usersCollection.findOneAndUpdate(
+        { userId: userId.toLowerCase() },
+        { $set: updates },
+        { returnDocument: 'after' }
+    );
+    if (!updatedUser.value) throw "Error: User could not be updated.";
+    return updatedUser.value;
+};
+
+export const deleteUser = async (userId) => {
+    const usersCollection = await users();
+    const deletedUser = await usersCollection.findOneAndDelete({ userId: userId.toLowerCase() });
+    if (!deletedUser.value) throw "Error: User not found or could not be deleted.";
+    return deletedUser.value;
 };
