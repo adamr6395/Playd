@@ -1,42 +1,63 @@
-<!DOCTYPE html>
+<header>
+    <h1>Sign Up</h1>
+</header>
 
-<html lang = "en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{{Title}}</title>
-        <link rel="stylesheet" href="/public/css/styles.css">
-    </head>
-    <body>
-        <header>
-                <nav>
-                    <ul>
-                        {{!-- <li><a id="homeLink" href="/home">Home Page</a></li>
-                        <li><a id="signInLink" href="/signinuser">Sign In Page</a></li>
-                        <li><a id="userLink" href="/user">User Page</a></li> --}}
-                    </ul>
-                </nav>
-        </header>
-        <main>
-            <form id="signup-form" action="/signupuser" method="POST">
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" required>
-                
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" required>
-                
-                <label for="userId">User ID:</label>
-                <input type="text" id="userId" name="userId" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                
-                <label for="confirmPassword">Confirm Password:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
-                
-                <button id="submitButton" type="submit">Sign Up</button>
-            </form>
-            <p><a href="/signinuser">Already have an account? Click here to sign-in</a></p>
-            <div class="error-messages"></div>
-        </main>
-    </body>
-</html>
+{{#if error}}
+  <div class="error-message">{{error}}</div>
+{{/if}}
+<div id="error-container" class = "error-container"></div>
+<form id="signup-form" name="signup-form" method="POST" action="/signupuser">
+    <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" value="{{data.firstName}}">
+        <span class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" value="{{data.lastName}}">
+        <span class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="userId">User ID:</label>
+        <input type="text" id="userId" name="userId" value="{{data.userId}}">
+        <span class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <span class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword">
+        <span class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="favoriteQuote">Favorite Quote:</label>
+        <input type="text" id="favoriteQuote" name="favoriteQuote" value="{{data.favoriteQuote}}">
+        <span class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="backgroundColor">Background Color:</label>
+        <input type="color" id="backgroundColor" name="backgroundColor" value="{{data.backgroundColor}}">
+        <span class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="fontColor">Font Color:</label>
+        <input type="color" id="fontColor" name="fontColor" value="{{data.fontColor}}">
+        <span class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="role">Role:</label>
+        <select id="role" name="role">
+            <option value="admin" {{#if (eq data.role "admin")}}selected{{/if}}>Admin</option>
+            <option value="user" {{#if (eq data.role "user")}}selected{{/if}}>User</option>
+        </select>
+        <span class="error-message"></span>
+    </div>
+    <button type="submit" id="submitButton" name="submitButton">Sign Up</button>
+</form>
+
+<p>
+    <a href="/signinuser">Already have an account? Click here to sign-in</a>
+</p>

@@ -1,26 +1,4 @@
-<!DOCTYPE html>
-
-<html lang = "en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{{Title}}</title>
-        <link rel="stylesheet" href="/public/css/styles.css">
-    </head>
-    <body>
-        <header>
-                <nav>
-                    <ul>
-                        {{!-- <li><a id="homeLink" href="/home">Home Page</a></li>
-                        <li><a id="signInLink" href="/signinuser">Sign In Page</a></li>
-                        <li><a id="userLink" href="/user">User Page</a></li> --}}
-                    </ul>
-                </nav>
-        </header>
-        <main>
-            <div id="signoutView">
-                <p>You have successfully signed out.</p>
-                <a href="/signinuser">Sign in again</a>
-            </div>
-        </main>
-    </body>
-</html>
+<div id="signoutView">
+  <p>{{message}}</p>
+  <a href="{{signinLink}}">Click here to sign in again.</a>
+</div>

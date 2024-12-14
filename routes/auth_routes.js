@@ -14,13 +14,23 @@ router
         const themePreference = { backgroundColor, fontColor };
     
         const result = await signUpUser(firstName, lastName, userId, password, favoriteQuote, themePreference, role);
+        //console.log('User registration successful. Redirecting...');
         if (result.registrationCompleted) {
-            console.log('User registration successful. Redirecting...');
             return res.redirect('/signinuser');
+        } else {
+            return res.status(500).render('signupuser', {
+              error: 'Internal Server Error.',
+              data: req.body,
+              title:"Sign Up"
+            });
         }
-        throw 'Registration failed.';
         } catch (e) {
-        res.status(400).render('signupuser', { title: 'Sign Up', error: e, data: req.body });
+            //console.log("Error passed to template:", e.message);  // Add this log to debug
+            res.status(400).render('signupuser', {
+                error: e,
+                data: req.body,
+                title: "Sign Up"
+            });
         }
 });
 
@@ -30,8 +40,8 @@ router
         res.render('signinuser', { title: 'Sign In' });
     })
     .post(async (req, res) => {
-        try {
         const { userId, password } = req.body;
+        try {
         const user = await signInUser(userId, password);
     
         req.session.user = {
@@ -49,10 +59,11 @@ router
         return res.redirect('/user');
         } catch (e) {
         console.error('Error during sign-in:', e);
-        res.status(400).render('signinuser', { 
-            title: 'Sign In', 
-            error: e, 
-            data: req.body });
+        res.status(400).render('signinuser', {
+            error: e,
+            data: { userId },
+            title:"Sign In"
+          });
         }
     });
 
