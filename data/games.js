@@ -83,6 +83,9 @@ export const getGameById = async (id) => {
     let game = result.data[0];
     //console.log(game);
     if (game.cover && game.cover.url) {
+      if (game.rating && typeof game.rating === 'number') {
+        game.rating = game.rating.toFixed(2); 
+      }
       let create = await createGame(game.id, game.name, game.cover.url, game.genres, game.summary, game.rating);
       return create;
     } else {
@@ -134,6 +137,11 @@ export const getGamesByGenre = async (genre) => {
       'Authorization': 'Bearer v198v1d300ceazaf8t4vyeikjr7xyp',
     },
   });
+  results.data.forEach(game => {
+    if (game.rating && typeof game.rating === 'number') {
+      game.rating = game.rating.toFixed(2);
+    }
+  });
   return results.data;
 };
 
@@ -146,6 +154,12 @@ export const getPopularGames = async () => {
       'Authorization': 'Bearer v198v1d300ceazaf8t4vyeikjr7xyp',
     },
   });
+  results.data.forEach(game => {
+    if (game.rating && typeof game.rating === 'number') {
+      game.rating = game.rating.toFixed(2);
+    }
+  });
+
   return results.data;
 };
 
