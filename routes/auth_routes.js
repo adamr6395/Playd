@@ -115,8 +115,9 @@ router.route('/signoutuser').get(requireAuthentication('/signinuser'), async (re
 });
 
 router.post('/follow', async (req, res) => {
-    const { userIdToFollow } = req.body;
+    let { userIdToFollow } = req.body;
     const currentUserId = req.session.user.userId;
+    
 
     try {
         if (!userIdToFollow || typeof userIdToFollow !== 'string') {
@@ -130,7 +131,7 @@ router.post('/follow', async (req, res) => {
         if (!userToFollow) {
             throw new Error('User not found');
         }
-
+        userIdToFollow = userIdToFollow.toLowerCase();
         await addFollowedUser(currentUserId, userIdToFollow);
 
         res.redirect('/user'); // Redirect back to the user profile

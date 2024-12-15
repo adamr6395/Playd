@@ -103,6 +103,7 @@ export async function getUserById(userId) {
     if (!userId || typeof userId !== 'string' || userId.trim().length === 0) {
         throw new Error('You must provide a valid userId');
     }
+    userId = userId.toLowerCase();
 
     const userCollection = await users(); // Access the users collection
     const user = await userCollection.findOne({ userId: userId.trim() }); // Query by userId
