@@ -38,6 +38,12 @@
         {{/if}}
     </section>
     {{#if user}}
+    <button
+    id="favorite-button"
+    data-game-id="{{game.game_id}}"
+    class="{{#if isFavorited}}favorited{{else}}not-favorited{{/if}}">
+    {{#if isFavorited}}Unfavorite{{else}}Favorite{{/if}}
+</button>
     <form method="POST" id="myForm">
 		<label id = 'formLabel'>
 			Leave a review:

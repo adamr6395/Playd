@@ -2,6 +2,7 @@
 import express from 'express';
 const router = express.Router();
 import * as gamesData from '../data/games.js'
+import * as userData from '../data/users.js'
 import * as reviewsData from '../data/reviews.js'
 import validation from '../helpers.js'
 import xss from 'xss';
@@ -55,11 +56,23 @@ router.route('/gameSearch').post(async (req, res) => {
 
 router.route('/getGame/:id').get(async (req, res) => {
   let id = req.params.id
+
   try{
     let gameInfo = await gamesData.getGameById(id);
-    res.render('getgame', {game: gameInfo,title:'getgame', user: req.session.user});
-  }
-  catch(e){
+
+    let isFavorited = false;
+    if (req.session?.user) {
+      const user = await userData.getUserById(req.session.user.userId);
+      isFavorited = user.likedGames.includes(id); // Compare with `game_id`
+    }
+
+    res.render('getgame', {
+      game: gameInfo,
+      isFavorited,
+      title:'getgame', 
+      user: req.session.user
+    });
+  } catch(e) {
     return res.status(404).render('error', {
       isServerError: true,
       title:"error",
@@ -84,5 +97,30 @@ router.route('/getGame/:id').post(async (req, res) => {
     });
   }
 });
+
+router.post('/favorite', async (req, res) => {
+  const { gameId, isFavorited } = req.body;
+  const userId = req.session?.user?.userId;
+
+  console.log('Favorite route hit');
+  console.log({ gameId, isFavorited, userId });
+
+  try {
+      if (!userId) throw new Error('User not authenticated');
+      if (!gameId) throw new Error('Game ID not provided');
+
+      if (isFavorited) {
+          await userData.removeFavoriteGame(userId, gameId);
+      } else {
+          await userData.addFavoriteGame(userId, gameId);
+      }
+
+      res.json({ success: true, newState: !isFavorited });
+  } catch (e) {
+      console.error('Error in favorite route:', e.message);
+      res.status(500).json({ success: false, error: e.message });
+  }
+});
+
 //export router
 export default router;

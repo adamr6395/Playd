@@ -1,5 +1,6 @@
 import { users } from "../config/mongoCollections.js"
 import bcrypt from "bcryptjs"
+import { ObjectId } from "mongodb";
 import {
     validateFirstName,
     validateLastName,
@@ -40,6 +41,7 @@ export const signUpUser = async (
         lastName,
         userId,
         password: hashedPassword,
+        likedGames: []
     };
 
     const insertInfo = await usersCollection.insertOne(newUser);
@@ -95,3 +97,36 @@ export const deleteUser = async (userId) => {
     if (!deletedUser.value) throw "Error: User not found or could not be deleted.";
     return deletedUser.value;
 };
+
+export async function getUserById(userId) {
+    if (!userId || typeof userId !== 'string' || userId.trim().length === 0) {
+        throw new Error('You must provide a valid userId');
+    }
+
+    const userCollection = await users(); // Access the users collection
+    const user = await userCollection.findOne({ userId: userId.trim() }); // Query by userId
+
+    if (!user) throw new Error('No user found with the given userId');
+    return user;
+}
+
+export async function addFavoriteGame(userId, gameId) {
+    const userCollection = await users();
+    const updateInfo = await userCollection.updateOne(
+        { userId: userId.toLowerCase() },
+        { $addToSet: { likedGames: gameId } }
+    );
+    if (updateInfo.modifiedCount === 0) throw new Error('Could not add favorite game');
+    return true;
+}
+
+export async function removeFavoriteGame(userId, gameId) {
+    const userCollection = await users();
+    const updateInfo = await userCollection.updateOne(
+        { userId: userId.toLowerCase() },
+        { $pull: { likedGames: gameId } }
+    );
+    if (updateInfo.modifiedCount === 0) throw new Error('Could not remove favorite game');
+    return true;
+}
+

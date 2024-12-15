@@ -1,4 +1,5 @@
-import { signInUser, signUpUser } from '../data/users.js';
+import { signInUser, signUpUser, getUserById } from '../data/users.js';
+import { getGameById } from '../data/games.js';
 import express from 'express';
 import { redirectAuthenticated, requireAuthentication } from '../middleware.js';
 
@@ -7,7 +8,7 @@ const router = express.Router();
 
 router
     .route('/signupuser')
-    .get(redirectAuthenticated('/user'), (req, res) => {
+    .get(redirectAuthenticated('/user'), async (req, res) => {
         res.render('signupuser', { user: req.session.user, title: 'Sign Up' });
     })
     .post(async (req, res) => {
@@ -36,7 +37,7 @@ router
 
 router
     .route('/signinuser')
-    .get(redirectAuthenticated('/user'), (req, res) => {
+    .get(redirectAuthenticated('/user'), async (req, res) => {
         res.render('signinuser', { user: req.session.user, title: 'Sign In' });
     })
     .post(async (req, res) => {
@@ -60,20 +61,44 @@ router
         }
     });
 
-router.route('/user').get(requireAuthentication('/signinuser'), (req, res) => {
-    const { firstName, lastName, role } = req.session.user;
-    res.render('user', {
-        user: req.session.user,
-        title: 'User Profile',
-        firstName,
-        lastName,
-        role,
-        currentTime: new Date().toLocaleTimeString(),
-        currentDate: new Date().toLocaleDateString(),
-    });
+router.route('/user').get(requireAuthentication('/signinuser'), async (req, res) => {
+    const { firstName, lastName, role, userId } = req.session.user;
+    
+    try {
+        console.log(`Fetching user: ${userId}`); // Debug log
+        const user = await getUserById(userId);
+        console.log('User data:', user); // Debug log
+
+        const likedGames = user.likedGames
+            ? await Promise.all(user.likedGames.map((gameId) => {
+                console.log(`Fetching game: ${gameId}`); // Debug log
+                return getGameById(gameId);
+            }))
+            : [];
+
+        console.log('Liked games:', likedGames); // Debug log
+
+        res.render('user', {
+            user: req.session.user,
+            title: 'User Profile',
+            firstName,
+            lastName,
+            role,
+            currentTime: new Date().toLocaleTimeString(),
+            currentDate: new Date().toLocaleDateString(),
+            likedGames,
+        });
+    } catch (e) {
+        console.error('Error in /user route:', e.message);
+        res.status(500).render('error', {
+            isServerError: true,
+            title: 'Error',
+            errorMessage: 'Unable to load user profile',
+        });
+    }
 });
 
-router.route('/signoutuser').get(requireAuthentication('/signinuser'), (req, res) => {
+router.route('/signoutuser').get(requireAuthentication('/signinuser'), async (req, res) => {
     req.session.destroy((err) => {
         if (err) {
             return res.status(500).render('error', { error: 'Failed to log out.', title: 'Error' });
@@ -81,5 +106,7 @@ router.route('/signoutuser').get(requireAuthentication('/signinuser'), (req, res
         res.redirect('/');
     });
 });
+
+
 
 export default router;

@@ -3,16 +3,24 @@
 If the user is logged in , and 'GET /user' endpoint is called, you will render this view based on the specs.
 
 --}}
-<script>
+{{!-- <script>
 const backgroundColor = '{{backgroundColor}}'; 
 const fontColor = '{{fontColor}}'; 
 document.documentElement.style.setProperty('--bg-color', backgroundColor);
 document.documentElement.style.setProperty('--font-color', fontColor);
-</script>
+</script> --}}
 <div id="userView">
     <p id="welcome">Welcome {{firstName}} {{lastName}}, the time is now: {{currentTime}} and the current date is {{currentDate}}. Your role in the system is: {{role}}.</p>
     {{#if (eq role "admin")}}
         <a id="adminLink" href="/administrator">Administrator Page</a>
     {{/if}}
     <a id="signoutLink" href="/signoutuser">Sign out</a>
+</div>
+<div>
+    <h2>Your Favorite Games</h2>
+    <ul>
+        {{#each likedGames}}
+            <li>{{this.name}}</li>
+        {{/each}}
+    </ul>
 </div>
