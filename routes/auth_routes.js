@@ -41,8 +41,8 @@ router
         res.render('signinuser', { user: req.session.user, title: 'Sign In' });
     })
     .post(async (req, res) => {
+        const { userId, password } = req.body;
         try {
-            const { userId, password } = req.body;
             const user = await signInUser(userId, password);
 
             req.session.user = {
@@ -123,6 +123,7 @@ router.post('/follow', async (req, res) => {
         if (!userIdToFollow || typeof userIdToFollow !== 'string') {
             throw new Error('Invalid User ID provided');
         }
+        userIdToFollow = userIdToFollow.trim().toLowerCase();
         if (currentUserId === userIdToFollow) {
             throw new Error('You cannot follow yourself');
         }
@@ -131,7 +132,6 @@ router.post('/follow', async (req, res) => {
         if (!userToFollow) {
             throw new Error('User not found');
         }
-        userIdToFollow = userIdToFollow.toLowerCase();
         await addFollowedUser(currentUserId, userIdToFollow);
 
         res.redirect('/user'); // Redirect back to the user profile
