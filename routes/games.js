@@ -4,6 +4,8 @@ const router = express.Router();
 import * as gamesData from '../data/games.js'
 import * as reviewsData from '../data/reviews.js'
 import validation from '../helpers.js'
+import xss from 'xss';
+
 router.route('/').get(async (req, res) => {
   //code here for GET will render the home handlebars file
   try{
@@ -29,6 +31,7 @@ router.route('/').get(async (req, res) => {
 router.route('/gameSearch').post(async (req, res) => {
   //code here for POST this is where your form will be submitting searchByTitle and then call your data function passing in the searchByTitle and then rendering the search results of up to 50 Movies.
   let game = req.body.searchByTitle;
+  game = xss(game);
 
   try{
     let results = await gamesData.searchGamesByTitle(game);
@@ -66,6 +69,8 @@ router.route('/getGame/:id').get(async (req, res) => {
 router.route('/getGame/:id').post(async (req, res) => {
   let id = req.params.id
   let {stars,review} = req.body;
+  review = xss(review);
+  
   try{
     let gameInfo = await reviewsData.addReview(id,Number(stars),review);
     res.render('getgame', { game: gameInfo, title:'getgame', user: req.session.user});
