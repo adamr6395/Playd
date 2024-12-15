@@ -16,7 +16,8 @@ export const addReview = async (userId,gameId, stars, review) => {
         user_id: userId,
         game_id: Number(gameId),
         stars: stars,
-        review: review.trim()
+        review: review.trim(),
+        likes: {}
     }
     let updatedInfo = await gamesCollection.findOneAndUpdate(
         { game_id: Number(gameId) },

@@ -108,4 +108,29 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Favorite button not found'); // Debug: If button is missing
     }
 
+    const likeButtons = document.querySelectorAll('.like-button');
+
+    likeButtons.forEach((button) => {
+        button.addEventListener('click', async () => {
+            console.log('Like button clicked'); 
+            const gameId = button.dataset.gameId; 
+            const reviewId = button.dataset.userId; 
+            const isLiked = button.classList.contains('liked'); 
+
+            console.log({ gameId, reviewId, isLiked });
+
+           
+            try {
+                const response = await axios.post('/like', { gameId, reviewId, isLiked });
+                if (response.data.success) {
+                    button.classList.toggle('liked', !isLiked);
+                    button.classList.toggle('not-liked', isLiked);
+                    button.textContent = !isLiked ? 'Unlike' : 'Like'; 
+                }
+            } catch (error) {
+                console.error('Error toggling like:', error); 
+            }
+        });
+    });
+
 });

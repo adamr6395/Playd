@@ -126,5 +126,12 @@ router.post('/favorite', async (req, res) => {
   }
 });
 
+router.post('/like', async (req,res) => {
+  const { gameId, isLiked, reviewId } = req.body;
+  const userId = req.session?.user?.userId;
+  console.log('like button hit');
+  console.log({ gameId, isLiked, reviewId });
+})
+
 //export router
 export default router;

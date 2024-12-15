@@ -35,12 +35,21 @@
         <ul>
             {{#each game.reviews}}
                 <li>
+                    <h5>
+                        {{this.user_id}}
+                    </h5>
+            
                     <p>
-                        Rating: {{this.stars}}
+                         {{this.stars}} Stars
                     </p>
                     <p>
                         Review: {{this.review}}
                     </p>
+                    <button id="like-button" 
+                     class="like-button"
+                     data-user-id="{{this.user_id}}"
+                     data-game-id="{{this.game_id}}"
+                     class="{{#if isLiked}}liked{{else}}not-liked{{/if}}">Like</button>
                 </li>
             {{/each}}
             </ul>
