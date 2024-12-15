@@ -41,7 +41,8 @@ export const signUpUser = async (
         lastName,
         userId,
         password: hashedPassword,
-        likedGames: []
+        likedGames: [],
+        followedUsers: []
     };
 
     const insertInfo = await usersCollection.insertOne(newUser);
@@ -129,4 +130,25 @@ export async function removeFavoriteGame(userId, gameId) {
     if (updateInfo.modifiedCount === 0) throw new Error('Could not remove favorite game');
     return true;
 }
+
+export async function addFollowedUser(currentUserId, userIdToFollow) {
+    const userCollection = await users();
+
+    const updateInfo = await userCollection.updateOne(
+        { userId: currentUserId.toLowerCase() },
+        { $addToSet: { followedUsers: userIdToFollow } }
+    );
+    if (updateInfo.modifiedCount === 0) {
+        throw new Error('Could not follow the user');
+    }
+    return true;
+}
+
+export async function getFollowedUsers(userId) {
+    const userCollection = await users();
+    const user = await userCollection.findOne({ userId: userId.toLowerCase() });
+    if (!user) throw new Error('User not found');
+    return user.followedUsers || [];
+}
+
 

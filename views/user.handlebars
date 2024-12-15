@@ -23,4 +23,22 @@ document.documentElement.style.setProperty('--font-color', fontColor);
             <li>{{this.name}}</li>
         {{/each}}
     </ul>
+    <form method="POST" action="/follow">
+        <input type="hidden" name="userIdToFollow" value="{{userId}}">
+        <button type="submit">Follow</button>
+    </form>
+    <h2>Followed Users</h2>
+    <ul>
+        {{#each followedUsers}}
+        <li><a href="/profile/{{this}}">{{this}}</a></li>
+        {{/each}}
+    </ul>
+    <div>
+        <h3>Add a Friend</h3>
+        <form method="POST" action="/follow">
+            <label for="friendUserId">Enter User ID:</label>
+            <input type="text" id="friendUserId" name="userIdToFollow" placeholder="User ID" required />
+            <button type="submit">Follow</button>
+        </form>
+    </div>
 </div>

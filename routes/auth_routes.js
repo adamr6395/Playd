@@ -1,4 +1,4 @@
-import { signInUser, signUpUser, getUserById } from '../data/users.js';
+import { signInUser, signUpUser, getUserById, addFollowedUser } from '../data/users.js';
 import { getGameById } from '../data/games.js';
 import express from 'express';
 import { redirectAuthenticated, requireAuthentication } from '../middleware.js';
@@ -75,6 +75,8 @@ router.route('/user').get(requireAuthentication('/signinuser'), async (req, res)
                 return getGameById(gameId);
             }))
             : [];
+        
+        const followedUsers = user.followedUsers || [];
 
         console.log('Liked games:', likedGames); // Debug log
 
@@ -87,6 +89,7 @@ router.route('/user').get(requireAuthentication('/signinuser'), async (req, res)
             currentTime: new Date().toLocaleTimeString(),
             currentDate: new Date().toLocaleDateString(),
             likedGames,
+            followedUsers,
         });
     } catch (e) {
         console.error('Error in /user route:', e.message);
@@ -105,6 +108,51 @@ router.route('/signoutuser').get(requireAuthentication('/signinuser'), async (re
         }
         res.redirect('/');
     });
+});
+
+router.post('/follow', async (req, res) => {
+    const { userIdToFollow } = req.body;
+    const currentUserId = req.session.user.userId;
+
+    try {
+        if (!userIdToFollow || typeof userIdToFollow !== 'string') {
+            throw new Error('Invalid User ID provided');
+        }
+        if (currentUserId === userIdToFollow) {
+            throw new Error('You cannot follow yourself');
+        }
+
+        const userToFollow = await getUserById(userIdToFollow); // Ensure the user exists
+        if (!userToFollow) {
+            throw new Error('User not found');
+        }
+
+        await addFollowedUser(currentUserId, userIdToFollow);
+
+        res.redirect('/user'); // Redirect back to the user profile
+    } catch (e) {
+        console.error('Error in /follow route:', e.message);
+        res.status(500).render('error', { error: e.message, title: 'Follow Error' });
+    }
+});
+
+router.get('/profile/:userId', async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const user = await getUserById(userId); // Get user data
+
+        res.render('profile', {
+            title: `${user.firstName} ${user.lastName}'s Profile`,
+            user, // Pass the user object to the view
+        });
+    } catch (e) {
+        console.error('Error in /profile/:userId route:', e.message);
+        res.status(404).render('error', {
+            title: 'User Not Found',
+            error: e.message,
+        });
+    }
 });
 
 
