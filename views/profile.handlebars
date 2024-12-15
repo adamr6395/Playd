@@ -7,7 +7,12 @@
     <h3>Favorite Games</h3>
     <ul>
         {{#each user.likedGames}}
-        <li>{{this}}</li>
+        <li>
+            <a href="/getGame/{{this.game_id}}">
+                <img src="https:{{this.cover}}" alt="{{this.name}}" style="width:50px; height:auto;" />
+                {{this.name}}
+            </a>
+        </li>
         {{/each}}
     </ul>
     <h3>Friends</h3>

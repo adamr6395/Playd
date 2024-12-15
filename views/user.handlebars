@@ -3,12 +3,6 @@
 If the user is logged in , and 'GET /user' endpoint is called, you will render this view based on the specs.
 
 --}}
-{{!-- <script>
-const backgroundColor = '{{backgroundColor}}'; 
-const fontColor = '{{fontColor}}'; 
-document.documentElement.style.setProperty('--bg-color', backgroundColor);
-document.documentElement.style.setProperty('--font-color', fontColor);
-</script> --}}
 <div id="userView">
     <p id="welcome">Welcome {{firstName}} {{lastName}}, the time is now: {{currentTime}} and the current date is {{currentDate}}. Your role in the system is: {{role}}.</p>
     {{#if (eq role "admin")}}
@@ -20,13 +14,16 @@ document.documentElement.style.setProperty('--font-color', fontColor);
     <h2>Your Favorite Games</h2>
     <ul>
         {{#each likedGames}}
-            <li>{{this.name}}</li>
+        <li>
+            <a href="/getGame/{{this.game_id}}">
+                <img src="https:{{this.cover}}" alt="{{this.name}}" style="width:50px; height:auto;" />
+                {{this.name}}
+            </a>
+        </li>
+        {{else}}
+        <li>No favorite games yet.</li>
         {{/each}}
     </ul>
-    <form method="POST" action="/follow">
-        <input type="hidden" name="userIdToFollow" value="{{userId}}">
-        <button type="submit">Follow</button>
-    </form>
     <h2>Followed Users</h2>
     <ul>
         {{#each followedUsers}}

@@ -70,11 +70,16 @@ router.route('/user').get(requireAuthentication('/signinuser'), async (req, res)
         console.log('User data:', user); // Debug log
 
         const likedGames = user.likedGames
-            ? await Promise.all(user.likedGames.map((gameId) => {
-                console.log(`Fetching game: ${gameId}`); // Debug log
-                return getGameById(gameId);
-            }))
+            ? await Promise.all(user.likedGames.map(async (gameId) => {
+                try {
+                    return await getGameById(gameId);
+                } catch (e) {
+                    console.warn(`Skipping invalid game ID: ${gameId}`);
+                    return null;
+                }
+            })).then(games => games.filter(game => game)) // Remove nulls
             : [];
+
         
         const followedUsers = user.followedUsers || [];
 
@@ -140,11 +145,24 @@ router.get('/profile/:userId', async (req, res) => {
     const userId = req.params.userId;
 
     try {
-        const user = await getUserById(userId); // Get user data
+        const user = await getUserById(userId);
+
+        // Fetch detailed game info for liked games
+        const likedGames = user.likedGames
+            ? await Promise.all(user.likedGames.map(async (gameId) => {
+                try {
+                    return await getGameById(gameId);
+                } catch (e) {
+                    console.warn(`Skipping invalid game ID: ${gameId}`);
+                    return null;
+                }
+            })).then(games => games.filter(game => game)) // Remove nulls
+            : [];
+
 
         res.render('profile', {
             title: `${user.firstName} ${user.lastName}'s Profile`,
-            user, // Pass the user object to the view
+            user: { ...user, likedGames }, // Attach enriched likedGames
         });
     } catch (e) {
         console.error('Error in /profile/:userId route:', e.message);
@@ -154,7 +172,6 @@ router.get('/profile/:userId', async (req, res) => {
         });
     }
 });
-
 
 
 export default router;
