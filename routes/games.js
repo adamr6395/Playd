@@ -63,7 +63,10 @@ router.route('/getGame/:id').get(async (req, res) => {
     let isFavorited = false;
     if (req.session?.user) {
       const user = await userData.getUserById(req.session.user.userId);
-      isFavorited = user.likedGames.includes(id); // Compare with `game_id`
+      if(!user.likedGames){} //in the scenario you dont have liked games this would crash
+      else{
+        isFavorited = user.likedGames.includes(id); // Compare with `game_id`
+      }
     }
 
     res.render('getgame', {
