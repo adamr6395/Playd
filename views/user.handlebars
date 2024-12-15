@@ -3,12 +3,9 @@
 If the user is logged in , and 'GET /user' endpoint is called, you will render this view based on the specs.
 
 --}}
+<a id="signoutLink" href="/signoutuser">Sign out</a>
 <div id="userView">
-    <p id="welcome">Welcome {{firstName}} {{lastName}}, the time is now: {{currentTime}} and the current date is {{currentDate}}. Your role in the system is: {{role}}.</p>
-    {{#if (eq role "admin")}}
-        <a id="adminLink" href="/administrator">Administrator Page</a>
-    {{/if}}
-    <a id="signoutLink" href="/signoutuser">Sign out</a>
+    <p id="welcome">Welcome {{firstName}} {{lastName}}, the time is now: {{currentTime}} and the current date is {{currentDate}}.</p>
 </div>
 <div>
     <h2>Your Favorite Games</h2>
@@ -32,6 +29,10 @@ If the user is logged in , and 'GET /user' endpoint is called, you will render t
     </ul>
     <div>
         <h3>Add a Friend</h3>
+        {{#if error}}
+            <div class="error-message">{{error}}</div>
+        {{/if}}
+        <div id="error-container" class = "error-container"></div>
         <form method="POST" action="/follow">
             <label for="friendUserId">Enter User ID:</label>
             <input type="text" id="friendUserId" name="userIdToFollow" placeholder="User ID" required />

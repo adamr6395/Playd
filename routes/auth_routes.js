@@ -90,7 +90,6 @@ router.route('/user').get(requireAuthentication('/signinuser'), async (req, res)
             title: 'User Profile',
             firstName,
             lastName,
-            role,
             currentTime: new Date().toLocaleTimeString(),
             currentDate: new Date().toLocaleDateString(),
             likedGames,
@@ -137,7 +136,22 @@ router.post('/follow', async (req, res) => {
         res.redirect('/user'); // Redirect back to the user profile
     } catch (e) {
         console.error('Error in /follow route:', e.message);
-        res.status(500).render('error', { error: e.message, title: 'Follow Error' });
+        const { firstName, lastName, role, userId } = req.session.user;
+        const user = await getUserById(userId);
+        const followedUsers = user.followedUsers || [];
+        const likedGames = user.likedGames
+            ? await Promise.all(user.likedGames.map(async (gameId) => {
+                try {
+                    return await getGameById(gameId);
+                } catch (e) {
+                    console.warn(`Skipping invalid game ID: ${gameId}`);
+                    return null;
+                }
+            })).then(games => games.filter(game => game)) // Remove nulls
+            : [];
+        res.status(500).render('user', { error: e.message, title: 'User Profile', currentTime: new Date().toLocaleTimeString(),
+            currentDate: new Date().toLocaleDateString(), user: req.session.user, firstName,
+            lastName, followedUsers, likedGames});
     }
 });
 
