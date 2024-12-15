@@ -1,25 +1,23 @@
 <header>
     <h1>{{user.firstName}} {{user.lastName}}'s Profile</h1>
 </header>
-<main>
-    <h2>About</h2>
-    <p><strong>User ID:</strong> {{user.userId}}</p>
-    <h3>Favorite Games</h3>
-    <ul>
-        {{#each user.likedGames}}
-        <li>
-            <a href="/getGame/{{this.game_id}}">
-                <img src="https:{{this.cover}}" alt="{{this.name}}" style="width:50px; height:auto;" />
-                {{this.name}}
-            </a>
-        </li>
-        {{/each}}
-    </ul>
-    <h3>Friends</h3>
-    <ul>
-        {{#each user.followedUsers}}
-        <li><a href="/profile/{{this}}">{{this}}</a></li>
-        {{/each}}
-    </ul>
-    <a href="/user">Back to User Page</a>
-</main>
+<h2>About</h2>
+<p><strong>User ID:</strong> {{user.userId}}</p>
+<h3>Favorite Games</h3>
+<ul>
+    {{#each user.likedGames}}
+    <li>
+        <a href="/getGame/{{this.game_id}}">
+            <img src="https:{{this.cover}}" alt="{{this.name}}" style="width:50px; height:auto;">
+            {{this.name}}
+        </a>
+    </li>
+    {{/each}}
+</ul>
+<h3>Friends</h3>
+<ul>
+    {{#each user.followedUsers}}
+    <li><a href="/profile/{{this}}">{{this}}</a></li>
+    {{/each}}
+</ul>
+<a href="/user">Back to User Page</a>

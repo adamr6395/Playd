@@ -19,14 +19,15 @@
             <dd>{{game.rating}}</dd>
             {{#if game.genres}}
             <dt>Genres:</dt>
-            <ul class="genres">
-                 {{#each game.genres}}
-                <li>
-                    {{this.name}}
-                </li>
-                {{/each}}
-            </ul>
-            
+            <dd>
+                <ul class="genres">
+                    {{#each game.genres}}
+                    <li>
+                        {{this.name}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </dd>
             {{/if}}
         </dl>
         {{#if game.reviews}}
