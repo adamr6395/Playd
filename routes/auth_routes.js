@@ -90,7 +90,6 @@ router.route('/user').get(requireAuthentication('/signinuser'), async (req, res)
             title: 'User Profile',
             firstName,
             lastName,
-            role,
             currentTime: new Date().toLocaleTimeString(),
             currentDate: new Date().toLocaleDateString(),
             likedGames,
@@ -137,7 +136,10 @@ router.post('/follow', async (req, res) => {
         res.redirect('/user'); // Redirect back to the user profile
     } catch (e) {
         console.error('Error in /follow route:', e.message);
-        res.status(500).render('user', { error: e.message, title: 'User Profile' });
+        const { firstName, lastName, role, userId } = req.session.user;
+        res.status(500).render('user', { error: e.message, title: 'User Profile', currentTime: new Date().toLocaleTimeString(),
+            currentDate: new Date().toLocaleDateString(), user: req.session.user, firstName,
+            lastName,});
     }
 });
 
