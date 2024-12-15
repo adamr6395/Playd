@@ -8,7 +8,11 @@
     {{#each user.likedGames}}
     <li>
         <a href="/getGame/{{this.game_id}}">
-            <img src="https:{{this.cover}}" alt="{{this.name}}" style="width:50px; height:auto;">
+            {{#if this.cover}}
+                 <img alt="{{this.name}} Poster" src="https:{{this.cover}} " style="width:50px; height:auto;">
+            {{else}}
+                <img alt="{{this.name}} Poster" src="/public/no_image.jpeg" style="width:50px; height:auto;">
+            {{/if}}
             {{this.name}}
         </a>
     </li>
