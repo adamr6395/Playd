@@ -89,7 +89,8 @@ router.route('/getGame/:id').post(async (req, res) => {
   review = xss(review);
   
   try{
-    let gameInfo = await reviewsData.addReview(id,Number(stars),review);
+    let userId = req.session.user.userId
+    let gameInfo = await reviewsData.addReview(userId,id,Number(stars),review);
     res.render('getgame', { game: gameInfo, title:'getgame', user: req.session.user});
   }
   catch(e){

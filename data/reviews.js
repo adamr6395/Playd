@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import axios from "axios";
 import { getGameById } from './games.js';
 
-export const addReview = async (id, stars, review) => {
+export const addReview = async (userId,gameId, stars, review) => {
 
     if(typeof stars != "number") throw "stars suck";
     if (typeof review != "string") throw "review sucks";
@@ -13,16 +13,17 @@ export const addReview = async (id, stars, review) => {
     let gamesCollection = await games();
     let newReview =
     {
-        game_id: Number(id),
+        user_id: userId,
+        game_id: Number(gameId),
         stars: stars,
         review: review.trim()
     }
     let updatedInfo = await gamesCollection.findOneAndUpdate(
-        { game_id: Number(id) },
+        { game_id: Number(gameId) },
         { $push: { reviews: newReview } }
     );
     if (!updatedInfo) throw new Error(`Could not update the game with id ${id}`);
-    let game = await getGameById(id);
+    let game = await getGameById(gameId);
     let newTotal = game.total + stars;
     let avg = 0
     if (game.reviews.length === 0) {
@@ -36,15 +37,15 @@ export const addReview = async (id, stars, review) => {
     }
     let newAvg = `${avg}/5`;
     updatedInfo = await gamesCollection.findOneAndUpdate(
-        { game_id: Number(id) },
+        { game_id: Number(gameId) },
         { $set: { score: newAvg, total: newTotal } }
     );
-    if (!updatedInfo) throw new Error(`Could not update the game with id ${id}`);
-    game = await getGameById(id);
+    if (!updatedInfo) throw new Error(`Could not update the game with id ${gameId}`);
+    game = await getGameById(gameId);
     return game;
 };
 
-export const updateReview = async (gameId, reviewId, updatedReview) => {
+export const updateReview = async (userId,gameId, reviewId, updatedReview) => {
     const gamesCollection = await games();
     const game = await gamesCollection.findOne({ game_id: Number(gameId) });
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
