@@ -20,7 +20,8 @@ router.route('/').get(async (req, res) => {
     res.render('home', { 
       title: 'Playd', 
       genreGames: genreGames,
-      popularGames: popularGames 
+      popularGames: popularGames,
+      user: req.session.user 
     });
   }
   catch(e){
@@ -42,7 +43,7 @@ router.route('/gameSearch').post(async (req, res) => {
         errorMessage: `We're sorry, but no results were found for "${game}".`
       });
     }
-    res.render('searchResults',{ title:'gameSearch',games: results, game});
+    res.render('searchResults',{ user: req.session.user, title:'gameSearch',games: results, game});
   } catch(e) { 
     res.status(500).render('error', {
       isServerError: true,

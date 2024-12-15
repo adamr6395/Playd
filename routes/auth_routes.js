@@ -8,7 +8,7 @@ const router = express.Router();
 router
     .route('/signupuser')
     .get(redirectAuthenticated('/user'), (req, res) => {
-        res.render('signupuser', { title: 'Sign Up' });
+        res.render('signupuser', { user: req.session.user, title: 'Sign Up' });
     })
     .post(async (req, res) => {
         try {
@@ -22,6 +22,7 @@ router
                     error: 'Internal Server Error.',
                     data: req.body,
                     title: 'Sign Up',
+                    user: req.session.user
                 });
             }
         } catch (e) {
@@ -36,7 +37,7 @@ router
 router
     .route('/signinuser')
     .get(redirectAuthenticated('/user'), (req, res) => {
-        res.render('signinuser', { title: 'Sign In' });
+        res.render('signinuser', { user: req.session.user, title: 'Sign In' });
     })
     .post(async (req, res) => {
         try {
@@ -62,6 +63,7 @@ router
 router.route('/user').get(requireAuthentication('/signinuser'), (req, res) => {
     const { firstName, lastName, role } = req.session.user;
     res.render('user', {
+        user: req.session.user,
         title: 'User Profile',
         firstName,
         lastName,
