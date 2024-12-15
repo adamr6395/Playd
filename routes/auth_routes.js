@@ -137,7 +137,7 @@ router.post('/follow', async (req, res) => {
         res.redirect('/user'); // Redirect back to the user profile
     } catch (e) {
         console.error('Error in /follow route:', e.message);
-        res.status(500).render('error', { error: e.message, title: 'Follow Error' });
+        res.status(500).render('user', { error: e.message, title: 'User Profile' });
     }
 });
 
