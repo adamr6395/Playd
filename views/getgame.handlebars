@@ -62,6 +62,10 @@
     class="{{#if isFavorited}}favorited{{else}}not-favorited{{/if}}">
     {{#if isFavorited}}Unfavorite{{else}}Favorite{{/if}}
 </button>
+    {{#if error}}
+    <div class="error-message" class="error-message">{{error}}</div>
+    {{/if}}
+    <div id="error-container" class = "error-container"></div>
     <form method="POST" id="myForm">
 		<label id = 'formLabel'>
 			Leave a review:
