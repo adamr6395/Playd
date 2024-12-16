@@ -129,7 +129,7 @@ export const getGamesByGenre = async (genre) => {
     throw new Error("Genre must be a non-empty string");
   }
 
-  let results = await axios.post(`https://api.igdb.com/v4/games`, `fields name,genres.name,cover.url,rating; where genres.name = "${genre}";`, {
+  let results = await axios.post(`https://api.igdb.com/v4/games`, `fields id,name, genres.name, summary, rating, cover.url; where genres.name = "${genre}";`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -146,7 +146,7 @@ export const getGamesByGenre = async (genre) => {
 };
 
 export const getPopularGames = async () => {
-  let results = await axios.post(`https://api.igdb.com/v4/games`, `fields name,genres.name,cover.url,rating; sort rating desc; limit 10;`, {
+  let results = await axios.post(`https://api.igdb.com/v4/games`, `fields id,name, genres.name, summary, rating, cover.url; sort rating desc; limit 10;`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
