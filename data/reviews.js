@@ -135,8 +135,7 @@ export const addLike = async (reviewId,userId,gameId) => {
     const review = reviews[reviewIndex];
     const existingLike = review.likes.find(like => like.user_id == userId);
     if (existingLike) {
-        await removeLike(reviewId,userId,gameId);
-        return;
+        return await removeLike(reviewId,userId,gameId);;
     }
     const existingDislike = review.dislikes.find(dislike => dislike.user_id == userId);
     if (existingDislike) {
@@ -259,8 +258,7 @@ export const addDislike = async (reviewId,userId,gameId) => {
     }
     const existingDislike = review.dislikes.find(dislike => dislike.user_id == userId);
     if (existingDislike) {
-        await removeDislike(reviewId,userId,gameId);
-        return review;
+        return await removeDislike(reviewId,userId,gameId);;
     }
 
 

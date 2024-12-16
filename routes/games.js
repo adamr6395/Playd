@@ -132,14 +132,9 @@ router.post('/like', async (req,res) => {
   console.log('like button hit');
   console.log({ gameId, isLiked, reviewId });
   let review = null;
-  if(!isLiked){
-    review = await reviewsData.addLike(reviewId,userId,gameId);
-    res.json({likes: review.likes.length, dislikes: review.dislikes.length})
-  }
-  else{
-    review =  await reviewsData.removeLike(reviewId,userId,gameId);
-    res.json({likes: review.likes.length, dislikes: review.dislikes.length})
-  }
+  review = await reviewsData.addLike(reviewId,userId,gameId);
+  res.json({likes: review.likes.length, dislikes: review.dislikes.length})
+  
   
 });
 
@@ -149,14 +144,8 @@ router.post('/dislike', async (req,res) => {
   console.log('dislike button hit');
   console.log({ gameId, isDisliked, reviewId });
   let review = null;
-  if(!isDisliked){
-    review = await reviewsData.addDislike(reviewId,userId,gameId);
-    res.json({likes: review.likes.length, dislikes: review.dislikes.length})
-  }
-  else{
-    review = await reviewsData.removeDislike(reviewId,userId,gameId);
-    res.json({likes: review.likes.length, dislikes: review.dislikes.length})
-  }
+  review = await reviewsData.addDislike(reviewId,userId,gameId);
+  res.json({likes: review.likes.length, dislikes: review.dislikes.length});
 });
 //export router
 export default router;
