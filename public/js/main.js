@@ -181,8 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.toggle('not-liked', isLiked);
                 const dislikeButton = document.querySelector(`.dislike-button[data-user-id="${reviewId}"]`);
                 const isDisliked = dislikeButton.classList.contains('disliked');
-                dislikeButton.classList.toggle('disliked',!isDisliked);
-                dislikeButton.classList.toggle('not-disliked',isDisliked);
+                if(isDisliked){
+                    dislikeButton.classList.toggle('disliked',!isDisliked);
+                    dislikeButton.classList.toggle('not-disliked',isDisliked);
+                }
                 const response = await axios.post('/like', { gameId, reviewId, isLiked });
                 const dislikeLabel = document.getElementById(`dislike-count-${reviewId}`);
                 dislikeLabel.textContent = response.data.dislikes;
@@ -208,8 +210,11 @@ dislikeButtons.forEach((button) => {
             button.classList.toggle('not-disliked', isDisliked);
             const likeButton = document.querySelector(`.like-button[data-user-id="${reviewId}"]`);
             const isLiked = likeButton.classList.contains('liked');
-            likeButton.classList.toggle('liked',!isLiked);
-            likeButton.classList.toggle('not-liked',isLiked);
+            if(isLiked){
+                likeButton.classList.toggle('liked',!isLiked);
+                likeButton.classList.toggle('not-liked',isLiked);
+            }
+            
             const response = await axios.post('/dislike', { gameId, reviewId, isDisliked });
             const dislikeLabel = document.getElementById(`dislike-count-${reviewId}`);
             dislikeLabel.textContent = response.data.dislikes;
