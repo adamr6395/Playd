@@ -21,10 +21,11 @@ export const createList = async (name, description, userId, sharedStatus = 'priv
         description: description?.trim() || '',
         createdBy: userId.trim(),
         games: [],
-        sharedStatus,
-        sharedWith
+        sharedStatus: sharedStatus,
+        sharedWith: sharedWith
     };
-
+-
+    console.log("HEY");
     const insertInfo = await listsCollection.insertOne(newList);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not create the list.';
     return { ...newList, _id: insertInfo.insertedId.toString() };
@@ -75,11 +76,11 @@ export const getListsByUser = async (userId) => {
         throw new Error('User ID must be a non-empty string.');
     
     userId = userId.trim();
-    console.log("Y!");
+    //console.log("Y!");
     const listCol = await lists();
-    console.log("X!");
-    const userLists = await listCol.find({ userId: userId }).toArray();
-    console.log("Z");
+    //console.log("X!");
+    const userLists = await listCol.find({ createdBy: userId }).toArray();
+    //console.log("Z");
     if (!userLists) 
         throw new Error('No lists found for the user.');
 

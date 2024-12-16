@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     console.log(`Fetching used: ${userId}`); // Debug log
     const user = await userData.getUserById(userId);
 
-    console.log("My name is ",user);
+    //console.log("My name is ",user);
     //const userId = req.session.user._id;
     try {
         if (!req.session.user) {
@@ -58,9 +58,13 @@ router.get('/create', (req, res) => {
 
 router.post('/create', async (req, res) => {
     const { name, description } = req.body;
-    const userId = req.session.user._id;
+    const { firstName, lastName, role, userId } = req.session.user;
+    //const userId = req.session.user.userId;
+    console.log("EEEEEEEEE");
+    console.log(userId);
 
     try {
+        console.log("J");
         const newList = await listsData.createList(name, description, userId);
         res.redirect('/gamelist');  
     } catch (e) {
