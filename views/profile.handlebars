@@ -1,42 +1,45 @@
-<header>
-    <h1>{{user.firstName}} {{user.lastName}}'s Profile</h1>
-</header>
-<h2>About</h2>
-<p><strong>User ID:</strong> {{user.userId}}</p>
-<h3>Reviews for games</h3>
-<ul>
-    {{#if reviews.length}}
-        {{#each reviews}}
+<div class="profile-container">
+    <h2>About</h2>
+    <p><strong>User ID:</strong> {{user.userId}}</p>
+
+    <h3>Reviews for Games</h3>
+    <ul>
+        {{#if reviews.length}}
+            {{#each reviews}}
+            <li>
+                <h4>Game: {{this.gameName}}</h4>
+                <p><strong>Stars:</strong> {{this.stars}}/5</p>
+                <p><strong>Review:</strong> {{this.review}}</p>
+                <p><strong>Date:</strong> {{this.date}}</p>
+            </li>
+            {{/each}}
+        {{else}}
+            <p>No reviews yet.</p>
+        {{/if}}
+    </ul>
+
+    <h3>Favorite Games</h3>
+    <ul>
+        {{#each user.likedGames}}
         <li>
-            <h4>Game: {{this.gameName}}</h4>
-            <p><strong>Stars:</strong> {{this.stars}}/5</p>
-            <p><strong>Review:</strong> {{this.review}}</p>
-            <p><strong>Date:</strong> {{this.date}}</p>
+            <a href="/getGame/{{this.game_id}}">
+                {{#if this.cover}}
+                    <img alt="{{this.name}} Poster" src="https:{{this.cover}}">
+                {{else}}
+                    <img alt="{{this.name}} Poster" src="/public/no_image.jpeg">
+                {{/if}}
+                {{this.name}}
+            </a>
         </li>
         {{/each}}
-    {{else}}
-        <p>No reviews yet.</p>
-    {{/if}}
-</ul>
-<h3>Favorite Games</h3>
-<ul>
-    {{#each user.likedGames}}
-    <li>
-        <a href="/getGame/{{this.game_id}}">
-            {{#if this.cover}}
-                 <img alt="{{this.name}} Poster" src="https:{{this.cover}} " style="width:50px; height:auto;">
-            {{else}}
-                <img alt="{{this.name}} Poster" src="/public/no_image.jpeg" style="width:50px; height:auto;">
-            {{/if}}
-            {{this.name}}
-        </a>
-    </li>
-    {{/each}}
-</ul>
-<h3>Friends</h3>
-<ul>
-    {{#each user.followedUsers}}
-    <li><a href="/profile/{{this}}">{{this}}</a></li>
-    {{/each}}
-</ul>
-<a href="/user">Back to User Page</a>
+    </ul>
+
+    <h3>Friends</h3>
+    <ul>
+        {{#each user.followedUsers}}
+        <li><a href="/profile/{{this}}">{{this}}</a></li>
+        {{/each}}
+    </ul>
+
+    <a href="/user">Back to User Page</a>
+</div>

@@ -58,6 +58,14 @@ export const searchGamesByTitle = async (title) => {
   })
   return results.data;
 };
+export const isInDB = async (id) => {
+  const gamesCollection = await games();
+  const game = await gamesCollection.findOne({ game_id: Number(id) });
+  if(!game){
+    return false;
+  }
+  return true;
+}
 export const getGameById = async (id) => {
   const gamesCollection = await games();
   const game = await gamesCollection.findOne({ game_id: Number(id) });
