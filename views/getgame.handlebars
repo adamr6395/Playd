@@ -50,6 +50,12 @@
                      data-user-id="{{this.user_id}}"
                      data-game-id="{{this.game_id}}"
                      class="{{#if isLiked}}liked{{else}}not-liked{{/if}}">Like</button>
+
+                     <button id="dislike-button" 
+                     class="dislike-button"
+                     data-user-id="{{this.user_id}}"
+                     data-game-id="{{this.game_id}}"
+                     class="{{#if isDisliked}}disliked{{else}}not-disliked{{/if}}">Dislike</button>
                 </li>
             {{/each}}
             </ul>

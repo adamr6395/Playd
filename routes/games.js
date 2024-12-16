@@ -131,7 +131,13 @@ router.post('/like', async (req,res) => {
   const userId = req.session?.user?.userId;
   console.log('like button hit');
   console.log({ gameId, isLiked, reviewId });
-})
+});
 
+router.post('/dislike', async (req,res) => {
+  const { gameId, isDisliked, reviewId } = req.body;
+  const userId = req.session?.user?.userId;
+  console.log('dislike button hit');
+  console.log({ gameId, isDisliked, reviewId });
+});
 //export router
 export default router;

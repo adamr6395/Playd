@@ -179,11 +179,29 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 button.classList.toggle('liked', !isLiked);
                 button.classList.toggle('not-liked', isLiked);
-                button.textContent = !isLiked ? 'Unlike' : 'Like'; 
                 const response = await axios.post('/like', { gameId, reviewId, isLiked });
             } catch (error) {
                 console.error('Error toggling like:', error); 
             }
         });
+});
+const dislikeButtons = document.querySelectorAll('.dislike-button');
+dislikeButtons.forEach((button) => {
+    button.addEventListener('click', async () => {
+        console.log('Like button clicked'); 
+        const gameId = button.dataset.gameId; 
+        const reviewId = button.dataset.userId; 
+        const isDisliked = button.classList.contains('disliked'); 
+
+        console.log({ gameId, reviewId, isDisliked });
+
+        try {
+            button.classList.toggle('disliked', !isDisliked);
+            button.classList.toggle('not-disliked', isDisliked);
+            const response = await axios.post('/dislike', { gameId, reviewId, isDisliked });
+        } catch (error) {
+            console.error('Error toggling like:', error); 
+        }
+    });
 });
 })
