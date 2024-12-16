@@ -141,12 +141,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!isValidUserId(userId)){
                 errors.push('Invalid User ID provided\n');
-                bool = true;
             } 
             const errorContainer = document.getElementById('error-container');
             displayErrors(errors, errorContainer);
 
             if (errors.length === 0) addUser.submit();
+        });
+    }
+    let listForm = document.getElementById('list-form');
+    if(listForm){
+        listForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const errors = [];
+            const nameL = document.getElementById('name').value.trim();;
+            if(!nameL || typeof nameL !== 'string'){
+                errors.push("Cannot have an empty list name\n");
+            }
+            const errorContainer = document.getElementById('error-container');
+            displayErrors(errors, errorContainer);
+
+            if (errors.length === 0) listForm.submit();
         });
     }
     let review = document.getElementById('myForm');
