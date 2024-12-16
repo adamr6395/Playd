@@ -103,21 +103,18 @@ router.post('/:listId/addGame', async (req, res) => {
     const gameId = req.body.gameId;
 
     try {
-        if (!ObjectId.isValid(gameId)) {
-            return res.status(400).render('error', {
-                isServerError: true,
-                title: 'Error',
-                errorMessage: 'Invalid Game ID provided.',
-            });
+        let gameInfo = await gamesData.getGameById(gameId);
+        if(!gameInfo){
+            throw new Error("Invalid Game Id");
         }
         await listsData.addGameToList(listId, gameId);
         res.redirect(`/gamelist/${listId}`);  
     } catch (e) {
         console.log('Error adding game to list:', e.message);
-        res.status(400).render('error', {
+        res.status(404).render('error', {
             isServerError: true,
             title: 'Error',
-            errorMessage: 'Unable to add the game to the list.',
+            errorMessage: 'Game Id not found',
         });
     }
 });

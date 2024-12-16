@@ -33,7 +33,6 @@ export const createList = async (name, description, userId, sharedStatus = 'priv
 
 export const addGameToList = async (listId, gameId) => {
     validateObjectId(listId);
-    validateObjectId(gameId);
 
     const listsCollection = await lists();
     const updatedList = await listsCollection.updateOne(
