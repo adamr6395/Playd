@@ -9,34 +9,57 @@ body {
   padding: 0;
   margin-top: 60px; 
 }
-
 header nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  display: flex; /* Ensure nav uses flexbox */
+  align-items: center; /* Align items vertically */
+  justify-content: space-between; /* Space out logo and links */
+  padding: 0.5rem 1rem;
+  background-color: lightslategrey;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid black;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+header nav .logo {
+  margin-right: auto; /* Push the logo to the far left */
+}
+
+header nav .logo a {
+  text-decoration: none;
+  font-size: 1.5rem; /* Make the logo slightly larger */
+  font-weight: bold;
+  color: black; /* Light blue color for the logo */
+  transition: color 0.3s ease-in-out;
+}
+
+header nav .logo a:hover {
+  color: #00bcd4; /* Change color to white on hover */
 }
 
 header nav ul {
-  background-color: rgb(121, 142, 186);
   list-style: none;
-  padding: 10px;
+  display: flex;
+  align-items: center;
   margin: 0;
-  text-align: left;
+  padding: 0;
 }
 
 header nav ul li {
-  display: inline;
-  margin: 0 15px;
+  margin-left: 15px; /* Space between right-side links */
 }
 
 header nav ul li a {
-  color: white;
   text-decoration: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
 }
 
 header nav ul li a:hover {
-  text-decoration: none;
+  color: #00bcd4; /* Light blue hover */
+  border-bottom: 2px solid #00bcd4;
 }
 
 h2 {
