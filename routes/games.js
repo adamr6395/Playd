@@ -94,10 +94,14 @@ router.route('/getGame/:id').post(async (req, res) => {
   let id = req.params.id
   let {stars,review} = req.body;
   review = xss(review);
-  
+  let gameInfo;
   try{
+    gameInfo = await gamesData.getGameById(id);
+    if (!gameInfo) {
+      throw new Error("Game not found");
+    }
     let userId = req.session.user.userId
-    let gameInfo = await reviewsData.addReview(userId,id,Number(stars),review);
+    gameInfo = await reviewsData.addReview(userId,id,Number(stars),review);
     if (gameInfo?.reviews) {
       gameInfo.reviews.sort((a, b) => {
         const likesA = Object.keys(a.likes || {}).length; // Count likes for review `a`
@@ -108,10 +112,21 @@ router.route('/getGame/:id').post(async (req, res) => {
     res.render('getgame', { game: gameInfo, title:'getgame', user: req.session.user});
   }
   catch(e){
+    if (e.message === "You have already posted a review for this game.") {
+      return res.status(400).render('getgame', {
+        isServerError: false,
+        title: "getgame",
+        user: req.session.user,
+        game: gameInfo,
+        error: e.message || "You have already reviewed this game."
+      });
+    }
+
+    // General error handling for other issues (game not found, etc.)
     return res.status(404).render('error', {
       isServerError: true,
-      title:"error",
-      errorMessage: "No Game found with that id"
+      title: "Error",
+      errorMessage: e || "No Game found with that id"
     });
   }
 });
