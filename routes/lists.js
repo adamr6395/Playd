@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/create', (req, res) => {
-    res.render('createList', {
+    res.render('createlist', {
         title: 'Create a New Game List',
         user: req.session.user,
     });
