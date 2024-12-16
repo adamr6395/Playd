@@ -26,13 +26,11 @@ export const addReview = async (userId,gameId, stars, review) => {
     );
     if (!updatedInfo) throw new Error(`Could not update the game with id ${id}`);
     let userCollection = await users();
-    const date = new Date();
-    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
     let userReview = {
         game_id: Number(gameId),
         stars: stars,
         review: review.trim(),
-        date: formattedDate // Store review date for tracking
+        date: new Date().toISOString() // Store review date for tracking
     };
     
     let updatedUserInfo = await userCollection.findOneAndUpdate(
@@ -136,6 +134,11 @@ export const addLike = async (reviewId,userId,gameId) => {
     const existingLike = review.likes.find(like => like.user_id == userId);
     if (existingLike) {
         await removeLike(reviewId,userId,gameId);
+        return;
+    }
+    const existingDislike = review.dislikes.find(dislike => dislike.user_id == userId);
+    if (existingDislike) {
+        await removeDislike(reviewId,userId,gameId);
     }
 
     const newLike = {
@@ -192,3 +195,110 @@ export const removeLike = async (reviewId, userId, gameId) => {
         throw new Error('Failed to update likes for the review.');
     }
 };
+
+export const addDislike = async (reviewId,userId,gameId) => {
+    if (!reviewId || !userId || !gameId) {
+        throw new Error("Missing inputs");
+    }
+
+
+    const gamesCollection = await games();
+
+
+    const game = await gamesCollection.findOne({ game_id: Number(gameId) });
+    if (!game) throw new Error(`Game with ID ${gameId} not found.`);
+
+
+
+
+    const reviews = game.reviews;
+    if (!reviews || reviews.length === 0) {
+        throw new Error('No reviews for this game');
+    }
+
+
+    const reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
+    if (reviewIndex === -1) {
+        throw new Error(`Review with ID ${reviewId} not found.`);
+    }
+
+
+    const review = reviews[reviewIndex];
+    const existingLike = review.likes.find(like => like.user_id == userId);
+    if (existingLike) {
+        await removeLike(reviewId,userId,gameId);
+    }
+    const existingDislike = review.dislikes.find(dislike => dislike.user_id == userId);
+    if (existingDislike) {
+        await removeDislike(reviewId,userId,gameId);
+        return;
+    }
+
+
+    const newDislike = {
+        user_id: userId,
+        like: 1
+    };
+    review.dislikes.push(newDislike);
+
+
+    const updateResult = await gamesCollection.updateOne(
+        { game_id: Number(gameId), "reviews.user_id": reviewId },
+        { $set: { "reviews.$.dislikes": review.dislikes } }
+    );
+
+
+    if (updateResult.modifiedCount === 0) {
+        throw new Error('Failed to update likes for the review.');
+    }
+}
+
+
+export const removeDislike = async (reviewId, userId, gameId) => {
+    if (!reviewId || !userId || !gameId) {
+        throw new Error("Missing inputs");
+    }
+
+
+    const gamesCollection = await games();
+
+
+    const game = await gamesCollection.findOne({ game_id: Number(gameId) });
+    if (!game) throw new Error(`Game with ID ${gameId} not found.`);
+
+
+    const reviews = game.reviews;
+    if (!reviews || reviews.length === 0) {
+        throw new Error('No reviews for this game');
+    }
+
+
+    const reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
+    if (reviewIndex === -1) {
+        throw new Error(`Review with ID ${reviewId} not found.`);
+    }
+
+
+    const review = reviews[reviewIndex];
+
+
+    const existingDislike = review.dislikes.findIndex(dislike => dislike.user_id == userId);
+    if (existingDislike === -1) {
+        throw new Error(`User ${userId} has not already liked this review.`);
+    }
+
+
+    review.dislikes.splice(existingDislike, 1);
+
+
+    const updateResult = await gamesCollection.updateOne(
+        { game_id: Number(gameId), "reviews.user_id": reviewId },
+        { $set: { "reviews.$.dislikes": review.dislikes } }
+    );
+
+
+    if (updateResult.modifiedCount === 0) {
+        throw new Error('Failed to update likes for the review.');
+    }
+};
+

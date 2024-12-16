@@ -145,6 +145,12 @@ router.post('/dislike', async (req,res) => {
   const userId = req.session?.user?.userId;
   console.log('dislike button hit');
   console.log({ gameId, isDisliked, reviewId });
+  if(!isDisliked){
+    await reviewsData.addDislike(reviewId,userId,gameId);
+  }
+  else{
+    await reviewsData.removeDislike(reviewId,userId,gameId);
+  }
 });
 //export router
 export default router;
