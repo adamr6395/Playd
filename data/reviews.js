@@ -17,8 +17,8 @@ export const addReview = async (userId,gameId, stars, review) => {
         game_id: Number(gameId),
         stars: stars,
         review: review.trim(),
-        likes: {},
-        dislikes: {}
+        likes: [],
+        dislikes: []
     }
     let updatedInfo = await gamesCollection.findOneAndUpdate(
         { game_id: Number(gameId) },
@@ -91,4 +91,86 @@ export const deleteReview = async (gameId, reviewId) => {
 
     if (!updatedGame.value) throw new Error('Could not delete the review.');
     return removedReview;
+};
+
+export const addLike = async (reviewId,userId,gameId) => {
+    if (!reviewId || !userId || !gameId) {
+        throw new Error("Missing inputs");
+    }
+
+    const gamesCollection = await games();
+
+    const game = await gamesCollection.findOne({ game_id: Number(gameId) });
+    if (!game) throw new Error(`Game with ID ${gameId} not found.`);
+
+
+    const reviews = game.reviews;
+    if (!reviews || reviews.length === 0) {
+        throw new Error('No reviews for this game');
+    }
+
+    const reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
+    if (reviewIndex === -1) {
+        throw new Error(`Review with ID ${reviewId} not found.`);
+    }
+
+    const review = reviews[reviewIndex];
+    const existingLike = review.likes.find(like => like.user_id == userId);
+    if (existingLike) {
+        await removeLike(reviewId,userId,gameId);
+    }
+
+    const newLike = {
+        user_id: userId,
+        like: 1 
+    };
+    review.likes.push(newLike);
+
+    const updateResult = await gamesCollection.updateOne(
+        { game_id: Number(gameId), "reviews.user_id": reviewId },
+        { $set: { "reviews.$.likes": review.likes } }
+    );
+
+    if (updateResult.modifiedCount === 0) {
+        throw new Error('Failed to update likes for the review.');
+    }
+}
+
+export const removeLike = async (reviewId, userId, gameId) => {
+    if (!reviewId || !userId || !gameId) {
+        throw new Error("Missing inputs");
+    }
+
+    const gamesCollection = await games();
+
+    const game = await gamesCollection.findOne({ game_id: Number(gameId) });
+    if (!game) throw new Error(`Game with ID ${gameId} not found.`);
+
+    const reviews = game.reviews;
+    if (!reviews || reviews.length === 0) {
+        throw new Error('No reviews for this game');
+    }
+
+    const reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
+    if (reviewIndex === -1) {
+        throw new Error(`Review with ID ${reviewId} not found.`);
+    }
+
+    const review = reviews[reviewIndex];
+
+    const existingLike = review.likes.findIndex(like => like.user_id == userId);
+    if (existingLike === -1) {
+        throw new Error(`User ${userId} has not already liked this review.`);
+    }
+
+    review.likes.splice(existingLike, 1);
+
+    const updateResult = await gamesCollection.updateOne(
+        { game_id: Number(gameId), "reviews.user_id": reviewId },
+        { $set: { "reviews.$.likes": review.likes } }
+    );
+
+    if (updateResult.modifiedCount === 0) {
+        throw new Error('Failed to update likes for the review.');
+    }
 };

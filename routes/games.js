@@ -131,6 +131,13 @@ router.post('/like', async (req,res) => {
   const userId = req.session?.user?.userId;
   console.log('like button hit');
   console.log({ gameId, isLiked, reviewId });
+  if(!isLiked){
+    await reviewsData.addLike(reviewId,userId,gameId);
+  }
+  else{
+    await reviewsData.removeLike(reviewId,userId,gameId);
+  }
+  
 });
 
 router.post('/dislike', async (req,res) => {
