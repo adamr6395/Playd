@@ -17,7 +17,7 @@ router
             const result = await signUpUser(firstName, lastName, userId, password, role);
 
             if (result.registrationCompleted) {
-                return res.redirect('/');
+                return res.redirect('/signinuser');
             } else {
                 res.status(500).render('signupuser', {
                     error: 'Internal Server Error.',
