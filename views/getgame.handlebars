@@ -45,6 +45,7 @@
                     <p>
                         Review: {{this.review}}
                     </p>
+                    {{#if user}}
                     <label for="like-button" id="like-count-{{this.user_id}}">{{this.likes.length}}</label>
                     <button id="like-button" 
                      class="like-button"
@@ -58,6 +59,7 @@
                      data-game-id="{{this.game_id}}"
                      class="{{#if isDisliked}}disliked{{else}}not-disliked{{/if}}">Dislike</button>
                 </li>
+                {{/if}}
             {{/each}}
             </ul>
         {{/if}}
