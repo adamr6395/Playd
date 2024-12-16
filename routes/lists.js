@@ -8,6 +8,14 @@ import xss from 'xss';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+    
+    const { firstName, lastName, role, userId } = req.session.user;
+    console.log("HEY!");
+    console.log(`Fetching used: ${userId}`); // Debug log
+    const user = await userData.getUserById(userId);
+
+    console.log("My name is ",user);
+    //const userId = req.session.user._id;
     try {
         if (!req.session.user) {
             return res.status(401).render('error', {
@@ -17,9 +25,12 @@ router.get('/', async (req, res) => {
             });
         }
 
-        const userId = req.session.user._id;  
+        
+        const { firstName, lastName, role, userId } = req.session.user;
+        //console.log(req.session.user)
+        //const userId = req.session.user.userId;  
         const user = await userData.getUserById(userId); 
-        const userLists = await listsData.getListsByUser(userId); 
+        const userLists = await listsData.getListsByUser(userId);
 
         console.log(userLists); 
 
@@ -37,7 +48,6 @@ router.get('/', async (req, res) => {
         });
     }
 });
-
 
 router.get('/create', (req, res) => {
     res.render('createList', {
