@@ -131,11 +131,14 @@ router.post('/like', async (req,res) => {
   const userId = req.session?.user?.userId;
   console.log('like button hit');
   console.log({ gameId, isLiked, reviewId });
+  let review = null;
   if(!isLiked){
-    await reviewsData.addLike(reviewId,userId,gameId);
+    review = await reviewsData.addLike(reviewId,userId,gameId);
+    res.json({likes: review.likes.length, dislikes: review.dislikes.length})
   }
   else{
-    await reviewsData.removeLike(reviewId,userId,gameId);
+    review =  await reviewsData.removeLike(reviewId,userId,gameId);
+    res.json({likes: review.likes.length, dislikes: review.dislikes.length})
   }
   
 });
@@ -145,11 +148,14 @@ router.post('/dislike', async (req,res) => {
   const userId = req.session?.user?.userId;
   console.log('dislike button hit');
   console.log({ gameId, isDisliked, reviewId });
+  let review = null;
   if(!isDisliked){
-    await reviewsData.addDislike(reviewId,userId,gameId);
+    review = await reviewsData.addDislike(reviewId,userId,gameId);
+    res.json({likes: review.likes.length, dislikes: review.dislikes.length})
   }
   else{
-    await reviewsData.removeDislike(reviewId,userId,gameId);
+    review = await reviewsData.removeDislike(reviewId,userId,gameId);
+    res.json({likes: review.likes.length, dislikes: review.dislikes.length})
   }
 });
 //export router
