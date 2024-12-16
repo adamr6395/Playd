@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const displayErrors = (errors, errorContainer) => {
+        const serverError = document.querySelector('.error-message');
+        if (serverError) serverError.remove();
         if (errors.length > 0) {
             errorContainer.innerHTML = errors.map((err) => `<p>${err}</p>`).join('');
         } else {
@@ -93,10 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('password').value.trim();
 
             if (!isValidUserId(userId)){
-                errors.push('Username or Password is Incorrect\n');
+                errors.push('Error: either the userId or password is invalid.\n');
                 bool = true;
             } 
-            if ((!isValidPassword(password)) && bool === false) errors.push('Username or Password is Incorrect\n');
+            if ((!isValidPassword(password)) && bool === false) errors.push('Error: either the userId or password is invalid.\n');
 
             const errorContainer = document.getElementById('error-container');
             displayErrors(errors, errorContainer);
