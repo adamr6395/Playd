@@ -174,9 +174,20 @@ router.get('/profile/:userId', async (req, res) => {
             })).then(games => games.filter(game => game)) // Remove nulls
             : [];
 
-
+        const reviewsWithGameNames = user.reviews
+            ? await Promise.all(user.reviews.map(async (review) => {
+                try {
+                    const game = await getGameById(review.game_id);
+                    return { ...review, gameName: game ? game.name : 'Unknown Game' };
+                } catch (e) {
+                    console.warn(`Skipping invalid game ID: ${review.game_id}`);
+                    return { ...review, gameName: 'Unknown Game' };
+                }
+            }))
+            : [];
         res.render('profile', {
             title: `${user.firstName} ${user.lastName}'s Profile`,
+            reviews: reviewsWithGameNames,
             user: { ...user, likedGames }, // Attach enriched likedGames
         });
     } catch (e) {
