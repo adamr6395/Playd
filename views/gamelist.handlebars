@@ -1,0 +1,13 @@
+
+
+<h2>{{user.firstName}}'s Game Lists</h2>
+<ul>
+    {{#each userLists}}
+        <li>
+            <h3>{{this.name}}</h3>
+            <p>{{this.description}}</p>
+            <a href="/lists/{{this._id}}">View List</a> 
+        </li>
+    {{/each}}
+</ul>
+<a href="/gamelist/create">Create a New List</a>
