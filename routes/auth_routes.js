@@ -17,7 +17,7 @@ router
             const result = await signUpUser(firstName, lastName, userId, password, role);
 
             if (result.registrationCompleted) {
-                return res.redirect('/');
+                return res.redirect('/signinuser');
             } else {
                 res.status(500).render('signupuser', {
                     error: 'Internal Server Error.',
@@ -185,9 +185,10 @@ router.get('/profile/:userId', async (req, res) => {
                 }
             }))
             : [];
+        const sortedReviews = reviewsWithGameNames.sort((a, b) => new Date(b.date) - new Date(a.date));
         res.render('profile', {
             title: `${user.firstName} ${user.lastName}'s Profile`,
-            reviews: reviewsWithGameNames,
+            reviews: sortedReviews,
             user: { ...user, likedGames }, // Attach enriched likedGames
         });
     } catch (e) {
