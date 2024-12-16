@@ -76,8 +76,9 @@ router.post('/create', async (req, res) => {
     }
 });
 
-router.get('/:listId', async (req, res) => {
-    const listId = req.params.listId;
+router.get('/:id', async (req, res) => {
+    console.log(req.params);
+    const listId = req.params.id;
     try {
         const list = await listsData.getListById(listId);
         const allGames = await gamesData.getAllGames(); 
