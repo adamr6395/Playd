@@ -165,8 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (errors.length === 0) review.submit();
         });
     }
-    const likeButtons = document.querySelectorAll('.like-button');
 
+    const likeButtons = document.querySelectorAll('.like-button');
     likeButtons.forEach((button) => {
         button.addEventListener('click', async () => {
             console.log('Like button clicked'); 
@@ -177,12 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log({ gameId, reviewId, isLiked });
 
             try {
+                button.classList.toggle('liked', !isLiked);
+                button.classList.toggle('not-liked', isLiked);
+                button.textContent = !isLiked ? 'Unlike' : 'Like'; 
                 const response = await axios.post('/like', { gameId, reviewId, isLiked });
-                if (response.data.success) {
-                    button.classList.toggle('liked', !isLiked);
-                    button.classList.toggle('not-liked', isLiked);
-                    button.textContent = !isLiked ? 'Unlike' : 'Like'; 
-                }
             } catch (error) {
                 console.error('Error toggling like:', error); 
             }
