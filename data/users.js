@@ -42,7 +42,8 @@ export const signUpUser = async (
         userId,
         password: hashedPassword,
         likedGames: [],
-        followedUsers: []
+        followedUsers: [],
+        reviews:[]
     };
 
     const insertInfo = await usersCollection.insertOne(newUser);

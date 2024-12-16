@@ -1,4 +1,4 @@
-import { games } from '../config/mongoCollections.js';
+import { games, users } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import axios from "axios";
 import { getGameById } from './games.js';
@@ -25,6 +25,22 @@ export const addReview = async (userId,gameId, stars, review) => {
         { $push: { reviews: newReview } }
     );
     if (!updatedInfo) throw new Error(`Could not update the game with id ${id}`);
+    let userCollection = await users();
+    let userReview = {
+        game_id: Number(gameId),
+        stars: stars,
+        review: review.trim(),
+        date: new Date().toISOString() // Store review date for tracking
+    };
+    
+    let updatedUserInfo = await userCollection.findOneAndUpdate(
+        { userId: userId },
+        { $push: { reviews: userReview } }, // Add the review to the user's "reviews" array
+        { returnDocument: 'after' } // Optional: Get the updated user document
+    );
+    if (!updatedUserInfo) {
+        throw new Error(`Could not update the user's reviews`);
+    }
     let game = await getGameById(gameId);
     let newTotal = game.total + stars;
     let avg = 0
