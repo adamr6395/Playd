@@ -70,20 +70,18 @@ export const shareList = async (listId, sharedStatus, sharedWith = []) => {
 
     if (updatedList.modifiedCount === 0) throw 'Could not update sharing status.';
 };
-export async function getListsByUser(userId) {
+export const getListsByUser = async (userId) => {
     if (!userId || typeof userId !== 'string' || userId.trim() === '')
         throw new Error('User ID must be a non-empty string.');
     
     userId = userId.trim();
-
-    if (!ObjectId.isValid(userId)) 
-        throw new Error('Invalid user ID.');
-
-    const lists = await lists();
-    const userLists = await lists.find({ userId: userId }).toArray();
-
-    if (!userLists || userLists.length === 0) 
+    console.log("Y!");
+    const listCol = await lists();
+    console.log("X!");
+    const userLists = await listCol.find({ userId: userId }).toArray();
+    console.log("Z");
+    if (!userLists) 
         throw new Error('No lists found for the user.');
 
     return userLists;
-}
+};
