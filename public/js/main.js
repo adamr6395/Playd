@@ -87,12 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
         signinForm.addEventListener('submit', (event) => {
             event.preventDefault();
             const errors = [];
+            let bool = false;
 
             const userId = document.getElementById('userId').value.trim();
             const password = document.getElementById('password').value.trim();
 
-            if (!isValidUserId(userId)) errors.push('User ID must be 5-10 characters long!\n');
-            if (!password || password.length < 8) errors.push('Password must be at least 8 characters long!\n');
+            if (!isValidUserId(userId)){
+                errors.push('Username or Password is Incorrect\n');
+                bool = true;
+            } 
+            if ((!password || password.length < 8) && bool === false) errors.push('Username or Password is Incorrect\n');
 
             const errorContainer = document.getElementById('error-container');
             displayErrors(errors, errorContainer);
