@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 errors.push('Username or Password is Incorrect\n');
                 bool = true;
             } 
-            if ((!password || password.length < 8) && bool === false) errors.push('Username or Password is Incorrect\n');
+            if ((!isValidPassword(password)) && bool === false) errors.push('Username or Password is Incorrect\n');
 
             const errorContainer = document.getElementById('error-container');
             displayErrors(errors, errorContainer);
