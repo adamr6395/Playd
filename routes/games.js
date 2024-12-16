@@ -60,7 +60,13 @@ router.route('/getGame/:id').get(async (req, res) => {
 
   try{
     let gameInfo = await gamesData.getGameById(id);
-
+    if (gameInfo?.reviews) {
+      gameInfo.reviews.sort((a, b) => {
+        const likesA = Object.keys(a.likes || {}).length; // Count likes for review `a`
+        const likesB = Object.keys(b.likes || {}).length; // Count likes for review `b`
+        return likesB - likesA; // Sort by descending order
+      });
+    }
     let isFavorited = false;
     if (req.session?.user) {
       const user = await userData.getUserById(req.session.user.userId);
@@ -92,6 +98,13 @@ router.route('/getGame/:id').post(async (req, res) => {
   try{
     let userId = req.session.user.userId
     let gameInfo = await reviewsData.addReview(userId,id,Number(stars),review);
+    if (gameInfo?.reviews) {
+      gameInfo.reviews.sort((a, b) => {
+        const likesA = Object.keys(a.likes || {}).length; // Count likes for review `a`
+        const likesB = Object.keys(b.likes || {}).length; // Count likes for review `b`
+        return likesB - likesA; // Sort by descending order
+      });
+    }
     res.render('getgame', { game: gameInfo, title:'getgame', user: req.session.user});
   }
   catch(e){

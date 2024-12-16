@@ -40,7 +40,7 @@ Also inside the main element, you will have a form; this form will POST to /movi
 <div>
   {{#each scoreGames}}
     <div>
-      <a href="/getGame/{{this.id}}">
+      <a href="/getGame/{{this.game_id}}">
         {{#if this.cover}}
           <img class="home_images" src="{{this.cover}}" alt="{{this.name}}">
         {{else}}
