@@ -26,11 +26,13 @@ export const addReview = async (userId,gameId, stars, review) => {
     );
     if (!updatedInfo) throw new Error(`Could not update the game with id ${id}`);
     let userCollection = await users();
+    const date = new Date();
+    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
     let userReview = {
         game_id: Number(gameId),
         stars: stars,
         review: review.trim(),
-        date: new Date().toISOString() // Store review date for tracking
+        date: formattedDate // Store review date for tracking
     };
     
     let updatedUserInfo = await userCollection.findOneAndUpdate(
