@@ -149,6 +149,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (errors.length === 0) addUser.submit();
         });
     }
+    let review = document.getElementById('myForm');
+    if(review){
+        addUser.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const errors = [];
+
+            const rev = document.getElementById('review').value.trim();
+            if (!rev) errors.push('Cannot have empty review \n');
+            if (typeof rev !== "string") errors.push('Invalid Review provided\n');
+
+            const errorContainer = document.getElementById('error-container');
+            displayErrors(errors, errorContainer);
+
+            if (errors.length === 0) addUser.submit();
+        });
+    }
     const likeButtons = document.querySelectorAll('.like-button');
 
     likeButtons.forEach((button) => {
