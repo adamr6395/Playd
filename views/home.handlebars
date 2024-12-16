@@ -1,69 +1,70 @@
-<!-- 
-This handlebar file will be rendered when the following route is hit: GET http://localhost:3000/
- 
-The title of the document should be "Movie Search". You should have the title set as the <title> element of the HTML document and as an h1 in your document.
 
-Your page should reference a CSS file, /public/css/styles.css; this file should have at least 10 rulesets you must use at least 5 of them on this page. 
+<header>
+  <h1>Playd</h1>
+</header>
 
-You should have a main element, and inside of the main element have a p element with a brief (2-3 sentence description) of what your website does.
+{{#if error}}
+<div class="error-message" class="error-message">{{error}}</div>
+{{/if}}
+<div id="error-container" class="error-container"></div>
+<form id="searchTitle" action="/gamesearch" method="post">
+  <label for="searchByTitle">Enter Game Title:</label>
+  <input type="text" id="searchByTitle" name="searchByTitle" required>
+  <input type="submit" id="search_button" name="search_button">
+</form>
 
-Also inside the main element, you will have a form; this form will POST to /moviesearch. This form will have an input and a label; You will give the input a name attribute and id attribute of "searchByTitle".  The label should properly reference the same id as the input. You should also have an input with a type of submit that submits the form (do not use a button, use an input with type="submit"). 
-
-
- -->
-    <header>
-      <h1>Playd</h1>
-    </header>
-    {{#if error}}
-    <div class="error-message" class="error-message">{{error}}</div>
-    {{/if}}
-    <div id="error-container" class = "error-container"></div>
-    <form id="searchTitle" action="/gamesearch" method="post">
-    <label for="searchByTitle">Enter Game Title:</label>
-    <input type="text" id="searchByTitle" name="searchByTitle" required>
-    <input type="submit" id="search_button" name="search_button">
-    </form>
-    
-    <h2>Popular Games</h2>
-<div>
-  {{#each popularGames}}
-    <div>
+<section>
+  <h2>Popular Games</h2>
+  <div class="gameContainer">
+    {{#each popularGames}}
+    <div class="gameCard">
       <a href="/getGame/{{this.id}}">
         <img class="home_images" src="{{this.cover.url}}" alt="{{this.name}}">
         <h3>{{this.name}}</h3>
         <p>Rating: {{this.rating}}</p>
       </a>
     </div>
-  {{/each}}
-</div>
-<h2>Top Games According to User Reviews!</h2>
-<div>
-  {{#each scoreGames}}
-    <div>
+    {{/each}}
+  </div>
+</section>
+
+<section>
+  <h2>Top Games According to User Reviews!</h2>
+  <div class="gameContainer">
+    {{#each scoreGames}}
+    <div class="gameCard">
       <a href="/getGame/{{this.game_id}}">
         {{#if this.cover}}
-          <img class="home_images" src="{{this.cover}}" alt="{{this.name}}">
+        <img class="home_images" src="{{this.cover}}" alt="{{this.name}}">
         {{else}}
-          <img class="home_images" src="/public/no_image.jpeg" alt="{{this.name}}">
+        <img class="home_images" src="/public/no_image.jpeg" alt="{{this.name}}">
         {{/if}}
         <h3>{{this.name}}</h3>
         <p>Score: {{this.score}}</p>
       </a>
     </div>
-  {{/each}}
-</div>
-<h2>Games by Genre</h2>
-{{#each genreGames}}
-  <h3>{{@key}} Games</h3>
-  <div>
-    {{#each this}}
-      <div>
-        <a href="/getGame/{{this.id}}">
-          <img class="home_images" src="{{this.cover.url}}" alt="{{this.name}}">
-          <h3>{{this.name}}</h3>
-          <p>Rating: {{this.rating}}</p>
-        </a>
-      </div>
     {{/each}}
   </div>
-{{/each}}
+</section>
+
+<section>
+  <h2>Games by Genre</h2>
+  {{#each genreGames}}
+  <h3>{{@key}} Games</h3>
+  <div class="gameContainer">
+    {{#each this}}
+    <div class="gameCard">
+      <a href="/getGame/{{this.id}}">
+        {{#if this.cover}}
+        <img class="home_images" src="{{this.cover.url}}" alt="{{this.name}}">
+        {{else}}
+        <img class="home_images" src="/public/no_image.jpeg" alt="{{this.name}}">
+        {{/if}}
+        <h3>{{this.name}}</h3>
+        <p>Rating: {{this.rating}}</p>
+      </a>
+    </div>
+    {{/each}}
+  </div>
+  {{/each}}
+</section>
