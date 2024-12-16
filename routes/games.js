@@ -17,11 +17,12 @@ router.route('/').get(async (req, res) => {
     }
 
     let popularGames = await gamesData.getPopularGames();
-
+    const getScore = await gamesData.getScore();
     res.render('home', { 
       title: 'Playd', 
       genreGames: genreGames,
       popularGames: popularGames,
+      scoreGames: getScore,
       user: req.session.user 
     });
   }

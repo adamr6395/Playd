@@ -36,7 +36,22 @@ Also inside the main element, you will have a form; this form will POST to /movi
     </div>
   {{/each}}
 </div>
-
+<h2>Top Games According to User Reviews!</h2>
+<div>
+  {{#each scoreGames}}
+    <div>
+      <a href="/getGame/{{this.id}}">
+        {{#if this.cover}}
+          <img class="home_images" src="{{this.cover}}" alt="{{this.name}}">
+        {{else}}
+          <img class="home_images" src="/public/no_image.jpeg" alt="{{this.name}}">
+        {{/if}}
+        <h3>{{this.name}}</h3>
+        <p>Score: {{this.score}}</p>
+      </a>
+    </div>
+  {{/each}}
+</div>
 <h2>Games by Genre</h2>
 {{#each genreGames}}
   <h3>{{@key}} Games</h3>

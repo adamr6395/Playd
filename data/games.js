@@ -162,4 +162,8 @@ export const getPopularGames = async () => {
 
   return results.data;
 };
-
+export const getScore = async () => {
+  const gamesCollection = await games ();
+  const score = await gamesCollection.find({}).sort({ score: -1 }).limit(10).toArray();
+  return score;
+}
