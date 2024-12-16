@@ -131,7 +131,24 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Favorite button not found'); // Debug: If button is missing
     }
+    let addUser = document.getElementById('addFollowing');
+    if(addUser){
+        addUser.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const errors = [];
 
+            const userId = document.getElementById('friendUserId').value.trim();
+
+            if (!isValidUserId(userId)){
+                errors.push('Invalid User ID provided\n');
+                bool = true;
+            } 
+            const errorContainer = document.getElementById('error-container');
+            displayErrors(errors, errorContainer);
+
+            if (errors.length === 0) addUser.submit();
+        });
+    }
     const likeButtons = document.querySelectorAll('.like-button');
 
     likeButtons.forEach((button) => {
