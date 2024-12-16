@@ -167,3 +167,8 @@ export const getScore = async () => {
   const score = await gamesCollection.find({}).sort({ score: -1 }).limit(10).toArray();
   return score;
 }
+export const getAllGames = async () => {
+  const gamesCollection = await games();
+  const allGames = await gamesCollection.find({}).toArray();  
+  return allGames;
+};

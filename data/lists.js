@@ -86,3 +86,23 @@ export const getListsByUser = async (userId) => {
 
     return userLists;
 };
+export const getListById = async (listId) => {
+    if (!listId || typeof listId !== 'string' || listId.trim() === '') {
+        throw new Error('Invalid List ID provided.');
+    }
+    listId = listId.trim();
+
+    if (!ObjectId.isValid(listId)) {
+        throw new Error('Invalid ObjectId format for List ID.');
+    }
+
+    const listsCollection = await lists();
+
+    const list = await listsCollection.findOne({ _id: new ObjectId(listId) });
+
+    if (!list) {
+        throw new Error('List not found.');
+    }
+
+    return list;
+};

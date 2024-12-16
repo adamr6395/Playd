@@ -83,7 +83,7 @@ router.get('/:id', async (req, res) => {
         const list = await listsData.getListById(listId);
         const allGames = await gamesData.getAllGames(); 
 
-        res.render('listDetail', {
+        res.render('listDetails', {
             title: `List: ${list.name}`,
             user: req.session.user,
             list: list,
@@ -103,9 +103,17 @@ router.post('/:listId/addGame', async (req, res) => {
     const gameId = req.body.gameId;
 
     try {
+        if (!ObjectId.isValid(gameId)) {
+            return res.status(400).render('error', {
+                isServerError: true,
+                title: 'Error',
+                errorMessage: 'Invalid Game ID provided.',
+            });
+        }
         await listsData.addGameToList(listId, gameId);
         res.redirect(`/gamelist/${listId}`);  
     } catch (e) {
+        console.log('Error adding game to list:', e.message);
         res.status(400).render('error', {
             isServerError: true,
             title: 'Error',
