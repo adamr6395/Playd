@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     let review = document.getElementById('myForm');
     if(review){
-        addUser.addEventListener('submit', (event) => {
+        review.addEventListener('submit', (event) => {
             event.preventDefault();
             const errors = [];
 
