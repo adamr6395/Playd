@@ -46,18 +46,16 @@
                         Review: {{this.review}}
                     </p>
                     
-                    <label for="like-button" id="like-count-{{this.user_id}}">{{this.likes.length}}</label>
-                    <button id="like-button" 
-                     class="like-button"
+                    <label for="like-button-{{this.user_id}}" id="like-count-{{this.user_id}}">{{this.likes.length}}</label>
+                    <button id="like-button-{{this.user_id}}" 
                      data-user-id="{{this.user_id}}"
                      data-game-id="{{this.game_id}}"
-                     class="{{#if isLiked}}liked{{else}}not-liked{{/if}}">Like</button>
-                    <label for="dislike-button" id="dislike-count-{{this.user_id}}">{{this.dislikes.length}}</label>
-                     <button id="dislike-button" 
-                     class="dislike-button"
+                     class="like-button {{#if isLiked}}liked{{else}}not-liked{{/if}}">Like</button>
+                    <label for="dislike-button-{{this.user_id}}" id="dislike-count-{{this.user_id}}">{{this.dislikes.length}}</label>
+                     <button id="dislike-button-{{this.user_id}}" 
                      data-user-id="{{this.user_id}}"
                      data-game-id="{{this.game_id}}"
-                     class="{{#if isDisliked}}disliked{{else}}not-disliked{{/if}}">Dislike</button>
+                     class="dislike-button {{#if isDisliked}}disliked{{else}}not-disliked{{/if}}">Dislike</button>
                   
                 </li>
             
