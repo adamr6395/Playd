@@ -185,9 +185,10 @@ router.get('/profile/:userId', async (req, res) => {
                 }
             }))
             : [];
+        const sortedReviews = reviewsWithGameNames.sort((a, b) => new Date(b.date) - new Date(a.date));
         res.render('profile', {
             title: `${user.firstName} ${user.lastName}'s Profile`,
-            reviews: reviewsWithGameNames,
+            reviews: sortedReviews,
             user: { ...user, likedGames }, // Attach enriched likedGames
         });
     } catch (e) {
