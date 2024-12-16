@@ -176,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log({ gameId, reviewId, isLiked });
 
-           
             try {
                 const response = await axios.post('/like', { gameId, reviewId, isLiked });
                 if (response.data.success) {
