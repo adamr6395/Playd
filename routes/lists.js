@@ -83,7 +83,7 @@ router.get('/:id', async (req, res) => {
         const list = await listsData.getListById(listId);
         const allGames = await gamesData.getAllGames(); 
 
-        res.render('listDetails', {
+        res.render('listdetails', {
             title: `List: ${list.name}`,
             user: req.session.user,
             list: list,
