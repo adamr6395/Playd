@@ -11,6 +11,12 @@ export const addReview = async (userId,gameId, stars, review) => {
     review = review.trim();
 
     let gamesCollection = await games();
+    let gameCheck = await gamesCollection.findOne({ game_id: Number(gameId) });
+    if (!gameCheck) throw new Error(`Game with id ${gameId} not found`);
+    const userRev = gameCheck.reviews.find(review => review.user_id === userId);
+    if (userRev) {
+        throw new Error("You have already posted a review for this game.");
+    }
     let newReview =
     {
         user_id: userId,
