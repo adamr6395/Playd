@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const errorContainer = document.getElementById('error-container');
             displayErrors(errors, errorContainer);
 
-            if (errors.length === 0) addUser.submit();
+            if (errors.length === 0) review.submit();
         });
     }
     const likeButtons = document.querySelectorAll('.like-button');
