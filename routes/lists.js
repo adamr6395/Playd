@@ -9,14 +9,7 @@ import xss from 'xss';
 const router = express.Router();
 
 router.get('/', requireAuthentication('/signinuser'), async (req, res) => {
-    
-    const { firstName, lastName, role, userId } = req.session.user;
-    console.log("HEY!");
-    console.log(`Fetching used: ${userId}`); // Debug log
-    const user = await userData.getUserById(userId);
 
-    //console.log("My name is ",user);
-    //const userId = req.session.user._id;
     try {
         if (!req.session.user) {
             return res.status(401).render('error', {
@@ -26,12 +19,12 @@ router.get('/', requireAuthentication('/signinuser'), async (req, res) => {
             });
         }
 
-        const { firstName, lastName, role, userId } = req.session.user;
+        const userId = xss(req.session.user.userId);
         const user = await userData.getUserById(userId);
         const userLists = await listsData.getListsByUser(userId);
 
         res.render('gamelist', {
-            title: `${user.firstName}'s Game Lists`,
+            title: `${xss(user.firstName)}'s Game Lists`,
             user: req.session.user,
             userLists: userLists,
         });
@@ -53,11 +46,10 @@ router.get('/create', requireAuthentication('/signinuser'), (req, res) => {
 });
 
 router.post('/create', requireAuthentication('/signinuser'), async (req, res) => {
-    const { name, description } = req.body;
-    const { firstName, lastName, role, userId } = req.session.user;
-    //const userId = req.session.user.userId;
-    console.log("EEEEEEEEE");
-    console.log(userId);
+    
+    const name = xss(req.body.name);
+    const description = xss(req.body.description);
+    const userId = xss(req.session.user.userId);
 
     try {
         console.log("J");
@@ -73,14 +65,13 @@ router.post('/create', requireAuthentication('/signinuser'), async (req, res) =>
 });
 
 router.get('/:id', requireAuthentication('/signinuser'), async (req, res) => {
-    console.log(req.params);
-    const listId = req.params.id;
+    const listId = xss(req.params.id);
     try {
         const list = await listsData.getListById(listId);
         const allGames = await gamesData.getAllGames();
 
         res.render('listdetails', {
-            title: `List: ${list.name}`,
+            title: `List: ${xss(list.name)}`,
             user: req.session.user,
             list: list,
             allGames: allGames,
@@ -95,8 +86,9 @@ router.get('/:id', requireAuthentication('/signinuser'), async (req, res) => {
 });
 
 router.post('/:listId/addGame', requireAuthentication('/signinuser'), async (req, res) => {
-    const listId = req.params.listId;
-    const gameId = req.body.gameId;
+    const listId = xss(req.params.listId);
+    const gameId = xss(req.body.gameId);
+    
     try {
         let gameInfo = await gamesData.getGameById(gameId);
         if (!gameInfo) {
