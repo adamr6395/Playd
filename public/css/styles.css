@@ -336,7 +336,7 @@ article ul li {
 .stars{
     display: flex;
     flex-direction: row-reverse;
-    justify-content: flex-end;
+    justify-content: center;
 
 }
 .stars input{
@@ -352,3 +352,12 @@ article ul li {
 .stars input:checked ~label {
   color: yellow;
 } 
+.review{
+  text-align: center;
+}
+.submit-review{
+  text-align: center;
+}
+.formLabel{
+  text-align: center;
+}
