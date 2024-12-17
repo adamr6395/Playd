@@ -163,6 +163,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (errors.length === 0) listForm.submit();
         });
     }
+    let listAddForm = document.getElementById('listAdd-form');
+    if(listAddForm){
+        listAddForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const errors = [];
+            const gameIDD = document.getElementById('gameId').value.trim();;
+            if(!gameIDD || typeof gameIDD !== 'string'){
+                errors.push("Cannot have an empty gameId\n");
+            }
+            const errorContainer = document.getElementById('error-container');
+            displayErrors(errors, errorContainer);
+
+            if (errors.length === 0) listAddForm.submit();
+        });
+    }
     let review = document.getElementById('myForm');
     if(review){
         review.addEventListener('submit', (event) => {

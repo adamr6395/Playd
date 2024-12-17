@@ -9,7 +9,11 @@
 </ul>
 
 <h3>Add a Game</h3>
-<form action="/gamelist/{{list._id}}/addGame" method="POST">
+{{#if error}}
+    <div class="error-message" class="error-message">{{error}}</div>
+{{/if}}
+<div id="error-container" class = "error-container"></div>
+<form action="/gamelist/{{list._id}}/addGame" method="POST" id="listAdd-form">
     <label for="gameId">Game ID:</label>
     <input type="text" id="gameId" name="gameId" required>
     <button type="submit">Add Game</button>
