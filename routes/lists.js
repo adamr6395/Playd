@@ -9,10 +9,10 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
 
-    const { firstName, lastName, role, userId } = req.session.user;
-    const user = await userData.getUserById(userId);
-
     try {
+        
+    //const { firstName, lastName, role, userId } = req.session.user;
+    //const user = await userData.getUserById(userId);
         if (!req.session.user) {
             return res.status(401).render('error', {
                 isServerError: true,
