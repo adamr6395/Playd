@@ -7,6 +7,8 @@ import {create} from 'express-handlebars';
 import * as mw from './middleware.js';
 import authRoutes from './routes/auth_routes.js';
 import gameRoutes from './routes/games.js';
+import listsRoutes from './routes/lists.js';
+
 
 
 const hbs = create({
@@ -45,6 +47,7 @@ app.use('/signoutuser', mw.requireAuthentication('/signinuser'));
 
 app.use('/', authRoutes);
 app.use('/', gameRoutes);
+app.use('/lists', listsRoutes);
 
 configRoutes(app);
 

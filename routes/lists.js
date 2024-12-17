@@ -3,16 +3,21 @@ import * as listsData from '../data/lists.js';
 import * as gamesData from '../data/games.js';
 import * as userData from '../data/users.js';
 import { ObjectId } from 'mongodb';
+import { requireAuthentication } from '../middleware.js';
 import xss from 'xss';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', requireAuthentication('/signinuser'), async (req, res) => {
+    
+    const { firstName, lastName, role, userId } = req.session.user;
+    console.log("HEY!");
+    console.log(`Fetching used: ${userId}`); // Debug log
+    const user = await userData.getUserById(userId);
 
+    //console.log("My name is ",user);
+    //const userId = req.session.user._id;
     try {
-        
-    //const { firstName, lastName, role, userId } = req.session.user;
-    //const user = await userData.getUserById(userId);
         if (!req.session.user) {
             return res.status(401).render('error', {
                 isServerError: true,
@@ -40,20 +45,20 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/create', (req, res) => {
+router.get('/create', requireAuthentication('/signinuser'), (req, res) => {
     res.render('createlist', {
         title: 'Create a New Game List',
         user: req.session.user,
     });
 });
 
-router.post('/create', async (req, res) => {
-    //const { name, description } = req.body;
-    //const { firstName, lastName, role, userId } = req.session.user;
+router.post('/create', requireAuthentication('/signinuser'), async (req, res) => {
+    const { name, description } = req.body;
+    const { firstName, lastName, role, userId } = req.session.user;
+    //const userId = req.session.user.userId;
+    console.log("EEEEEEEEE");
+    console.log(userId);
 
-    const name = xss(req.body.name);
-    const description = xss(req.body.description);
-    const userId = xss(req.session.user.userId);
     try {
         console.log("J");
         const newList = await listsData.createList(name, description, userId);
@@ -67,9 +72,9 @@ router.post('/create', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
-
-    const listId = xss(req.params.id);
+router.get('/:id', requireAuthentication('/signinuser'), async (req, res) => {
+    console.log(req.params);
+    const listId = req.params.id;
     try {
         const list = await listsData.getListById(listId);
         const allGames = await gamesData.getAllGames();
@@ -89,9 +94,9 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/:listId/addGame', async (req, res) => {
-    const listId = xss(req.params.listId);
-    const gameId = xss(req.body.gameId);
+router.post('/:listId/addGame', requireAuthentication('/signinuser'), async (req, res) => {
+    const listId = req.params.listId;
+    const gameId = req.body.gameId;
 
     try {
         let gameInfo = await gamesData.getGameById(gameId);
@@ -110,7 +115,7 @@ router.post('/:listId/addGame', async (req, res) => {
     }
 });
 
-router.post('/:listId/share', async (req, res) => {
+router.post('/:listId/share', requireAuthentication('/signinuser'), async (req, res) => {
     const listId = xss(req.params.listId);
     const sharedStatus = xss(req.body.sharedStatus || 'private');
     const sharedWith = xss(req.body.sharedWith || '');
