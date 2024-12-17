@@ -32,11 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const displayErrors = (errors, errorContainer) => {
-<<<<<<< HEAD
         const serverError = document.querySelector('.error-message');
         if (serverError) serverError.remove();
-=======
->>>>>>> e5dd5b89f61621bc9e0e7eeb8cf12d4a6912a4a7
         if (errors.length > 0) {
             errorContainer.innerHTML = errors.map((err) => `<p>${err}</p>`).join('');
         } else {
@@ -92,24 +89,16 @@ document.addEventListener('DOMContentLoaded', () => {
         signinForm.addEventListener('submit', (event) => {
             event.preventDefault();
             const errors = [];
-<<<<<<< HEAD
             let bool = false;
-=======
->>>>>>> e5dd5b89f61621bc9e0e7eeb8cf12d4a6912a4a7
 
             const userId = document.getElementById('userId').value.trim();
             const password = document.getElementById('password').value.trim();
 
-<<<<<<< HEAD
             if (!isValidUserId(userId)){
                 errors.push('Error: either the userId or password is invalid.\n');
                 bool = true;
             } 
             if ((!isValidPassword(password)) && bool === false) errors.push('Error: either the userId or password is invalid.\n');
-=======
-            if (!isValidUserId(userId)) errors.push('User ID must be 5-10 characters long!\n');
-            if (!password || password.length < 8) errors.push('Password must be at least 8 characters long!\n');
->>>>>>> e5dd5b89f61621bc9e0e7eeb8cf12d4a6912a4a7
 
             const errorContainer = document.getElementById('error-container');
             displayErrors(errors, errorContainer);
@@ -142,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Favorite button not found'); // Debug: If button is missing
     }
-<<<<<<< HEAD
     let addUser = document.getElementById('addFollowing');
     if(addUser){
         addUser.addEventListener('submit', (event) => {
@@ -267,7 +255,3 @@ dislikeButtons.forEach((button) => {
     });
 });
 })
-=======
-
-});
->>>>>>> e5dd5b89f61621bc9e0e7eeb8cf12d4a6912a4a7
