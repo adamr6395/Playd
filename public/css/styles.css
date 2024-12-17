@@ -333,3 +333,22 @@ article ul li {
 .profile-container a:hover {
   background-color: lightblue;
 }
+.stars{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+
+}
+.stars input{
+  display: none;
+}
+
+.stars label{
+  font-size: xx-large;
+}
+
+.stars label:hover,
+.stars label:hover ~label,
+.stars input:checked ~label {
+  color: yellow;
+} 
