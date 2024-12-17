@@ -1,8 +1,8 @@
 <h2>Create a New Game List</h2>
 {{#if error}}
-    <div class="error-message" class="error-message">{{error}}</div>
+<div class="error-message" class="error-message">{{error}}</div>
 {{/if}}
-    <div id="error-container" class = "error-container"></div>
+<div id="error-container" class="error-container"></div>
 <form action="/gamelist/create" method="POST" id="list-form">
     <label for="name">List Name:</label>
     <input type="text" id="name" name="name" required>

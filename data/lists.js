@@ -13,7 +13,7 @@ export const createList = async (name, description, userId, sharedStatus = 'priv
     if (!userId || typeof userId !== 'string' || userId.trim() === '') throw 'Valid userId must be provided.';
     if (!['private', 'public'].includes(sharedStatus)) throw 'Shared status must be either "private" or "public".';
     if (!Array.isArray(sharedWith)) throw 'Shared with must be an array of user IDs.';
-    sharedWith.forEach((id) => validateObjectId(id)); 
+    sharedWith.forEach((id) => validateObjectId(id));
 
     const listsCollection = await lists();
     const newList = {
@@ -24,8 +24,7 @@ export const createList = async (name, description, userId, sharedStatus = 'priv
         sharedStatus: sharedStatus,
         sharedWith: sharedWith
     };
--
-    console.log("HEY");
+
     const insertInfo = await listsCollection.insertOne(newList);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not create the list.';
     return { ...newList, _id: insertInfo.insertedId.toString() };
@@ -60,7 +59,7 @@ export const shareList = async (listId, sharedStatus, sharedWith = []) => {
     validateObjectId(listId);
     if (!['private', 'public'].includes(sharedStatus)) throw 'Shared status must be either "private" or "public".';
     if (!Array.isArray(sharedWith)) throw 'Shared with must be an array of user IDs.';
-    sharedWith.forEach((id) => validateObjectId(id)); 
+    sharedWith.forEach((id) => validateObjectId(id));
 
     const listsCollection = await lists();
     const updatedList = await listsCollection.updateOne(
@@ -73,14 +72,11 @@ export const shareList = async (listId, sharedStatus, sharedWith = []) => {
 export const getListsByUser = async (userId) => {
     if (!userId || typeof userId !== 'string' || userId.trim() === '')
         throw new Error('User ID must be a non-empty string.');
-    
+
     userId = userId.trim();
-    //console.log("Y!");
     const listCol = await lists();
-    //console.log("X!");
     const userLists = await listCol.find({ createdBy: userId }).toArray();
-    //console.log("Z");
-    if (!userLists) 
+    if (!userLists)
         throw new Error('No lists found for the user.');
 
     return userLists;
@@ -96,7 +92,6 @@ export const getListById = async (listId) => {
     }
 
     const listsCollection = await lists();
-
     const list = await listsCollection.findOne({ _id: new ObjectId(listId) });
 
     if (!list) {

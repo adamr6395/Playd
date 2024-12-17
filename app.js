@@ -1,9 +1,8 @@
-//Here is where you'll set up your server as shown in lecture code
 import express from 'express';
 import session from 'express-session';
 const app = express();
 import configRoutes from './routes/index.js';
-import {create} from 'express-handlebars';
+import { create } from 'express-handlebars';
 import * as mw from './middleware.js';
 import authRoutes from './routes/auth_routes.js';
 import gameRoutes from './routes/games.js';
@@ -30,7 +29,7 @@ app.use(
 
 app.use('/public', express.static('public'));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(mw.rewriteUnsupportedBrowserMethods);
 
 app.engine('handlebars', hbs.engine);

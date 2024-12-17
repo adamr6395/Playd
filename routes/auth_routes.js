@@ -45,7 +45,6 @@ router
         res.render('signinuser', { user: req.session.user, title: 'Sign In' });
     })
     .post(async (req, res) => {
-        //const { userId, password } = req.body;
         const userId = xss(req.body.userId);
         const password = xss(req.body.password);
         try {
@@ -67,13 +66,13 @@ router
     });
 
 router.route('/user').get(requireAuthentication('/signinuser'), async (req, res) => {
-    const { firstName, lastName} = req.session.user;
+    const { firstName, lastName } = req.session.user;
     const userId = xss(req.session.user.userId);
 
     try {
-        console.log(`Fetching user: ${userId}`); // Debug log
+        //console.log(`Fetching user: ${userId}`); // Debug log
         const user = await getUserById(userId);
-        console.log('User data:', user); // Debug log
+        //console.log('User data:', user); // Debug log
 
         const likedGames = user.likedGames
             ? await Promise.all(user.likedGames.map(async (gameId) => {
@@ -86,10 +85,9 @@ router.route('/user').get(requireAuthentication('/signinuser'), async (req, res)
             })).then(games => games.filter(game => game)) // Remove nulls
             : [];
 
-
         const followedUsers = user.followedUsers || [];
 
-        console.log('Liked games:', likedGames); // Debug log
+        //console.log('Liked games:', likedGames); // Debug log
 
         res.render('user', {
             user: req.session.user,
