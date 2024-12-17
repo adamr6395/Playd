@@ -14,12 +14,11 @@ router
     })
     .post(async (req, res) => {
         try {
-            //const { firstName, lastName, userId, password, role } = req.body;
             const firstName = xss(req.body.firstName);
             const lastName = xss(req.body.lastName);
             const userId = xss(req.body.userId);
             const password = xss(req.body.password);
-            const result = await signUpUser(firstName, lastName, userId, password, role);
+            const result = await signUpUser(firstName, lastName, userId, password);
 
             if (result.registrationCompleted) {
                 return res.redirect('/signinuser');
@@ -56,7 +55,6 @@ router
                 firstName: user.firstName,
                 lastName: user.lastName,
                 userId: user.userId,
-                role: user.role,
             };
             res.redirect('/user');
         } catch (e) {
@@ -69,7 +67,7 @@ router
     });
 
 router.route('/user').get(requireAuthentication('/signinuser'), async (req, res) => {
-    const { firstName, lastName, role} = req.session.user;
+    const { firstName, lastName} = req.session.user;
     const userId = xss(req.session.user.userId);
 
     try {
@@ -145,7 +143,7 @@ router.post('/follow', async (req, res) => {
         res.redirect('/user'); // Redirect back to the user profile
     } catch (e) {
         console.error('Error in /follow route:', e.message);
-        const { firstName, lastName, role, userId } = req.session.user;
+        const { firstName, lastName, userId } = req.session.user;
         const user = await getUserById(userId);
         const followedUsers = user.followedUsers || [];
         const likedGames = user.likedGames
