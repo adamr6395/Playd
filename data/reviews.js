@@ -3,9 +3,9 @@ import { ObjectId } from 'mongodb';
 import axios from "axios";
 import { getGameById } from './games.js';
 
-export const addReview = async (userId,gameId, stars, review) => {
+export const addReview = async (userId, gameId, stars, review) => {
 
-    if(typeof stars !== "number") throw "stars suck";
+    if (typeof stars !== "number") throw "stars suck";
     if (typeof review !== "string") throw "review sucks";
 
     review = review.trim();
@@ -40,7 +40,7 @@ export const addReview = async (userId,gameId, stars, review) => {
         review: review.trim(),
         date: formattedDate // Store review date for tracking
     };
-    
+
     let updatedUserInfo = await userCollection.findOneAndUpdate(
         { userId: userId },
         { $push: { reviews: userReview } }, // Add the review to the user's "reviews" array
@@ -71,7 +71,7 @@ export const addReview = async (userId,gameId, stars, review) => {
     return game;
 };
 
-export const updateReview = async (userId,gameId, reviewId, updatedReview) => {
+export const updateReview = async (userId, gameId, reviewId, updatedReview) => {
     const gamesCollection = await games();
     const game = await gamesCollection.findOne({ game_id: Number(gameId) });
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
@@ -117,7 +117,7 @@ export const deleteReview = async (gameId, reviewId) => {
     return removedReview;
 };
 
-export const addLike = async (reviewId,userId,gameId) => {
+export const addLike = async (reviewId, userId, gameId) => {
     if (!reviewId || !userId || !gameId) {
         throw new Error("Missing inputs");
     }
@@ -126,7 +126,6 @@ export const addLike = async (reviewId,userId,gameId) => {
 
     let game = await gamesCollection.findOne({ game_id: Number(gameId) });
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
-
 
     let reviews = game.reviews;
     if (!reviews || reviews.length === 0) {
@@ -141,16 +140,16 @@ export const addLike = async (reviewId,userId,gameId) => {
     const review = reviews[reviewIndex];
     const existingLike = review.likes.find(like => like.user_id == userId);
     if (existingLike) {
-        return await removeLike(reviewId,userId,gameId);;
+        return await removeLike(reviewId, userId, gameId);;
     }
     const existingDislike = review.dislikes.find(dislike => dislike.user_id == userId);
     if (existingDislike) {
-        await removeDislike(reviewId,userId,gameId);
+        await removeDislike(reviewId, userId, gameId);
     }
 
     const newLike = {
         user_id: userId,
-        like: 1 
+        like: 1
     };
     review.likes.push(newLike);
 
@@ -162,7 +161,7 @@ export const addLike = async (reviewId,userId,gameId) => {
     if (updateResult.modifiedCount === 0) {
         throw new Error('Failed to update likes for the review.');
     }
-    
+
     game = await gamesCollection.findOne({ game_id: Number(gameId) });
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
 
@@ -170,7 +169,6 @@ export const addLike = async (reviewId,userId,gameId) => {
     if (!reviews || reviews.length === 0) {
         throw new Error('No reviews for this game');
     }
-
 
     reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
     if (reviewIndex === -1) {
@@ -185,8 +183,8 @@ export const removeLike = async (reviewId, userId, gameId) => {
     }
 
     const gamesCollection = await games();
-
     let game = await gamesCollection.findOne({ game_id: Number(gameId) });
+
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
 
     let reviews = game.reviews;
@@ -216,7 +214,7 @@ export const removeLike = async (reviewId, userId, gameId) => {
     if (updateResult.modifiedCount === 0) {
         throw new Error('Failed to update likes for the review.');
     }
-    
+
     game = await gamesCollection.findOne({ game_id: Number(gameId) });
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
 
@@ -224,7 +222,6 @@ export const removeLike = async (reviewId, userId, gameId) => {
     if (!reviews || reviews.length === 0) {
         throw new Error('No reviews for this game');
     }
-
 
     reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
     if (reviewIndex === -1) {
@@ -233,14 +230,12 @@ export const removeLike = async (reviewId, userId, gameId) => {
     return reviews[reviewIndex];
 };
 
-export const addDislike = async (reviewId,userId,gameId) => {
+export const addDislike = async (reviewId, userId, gameId) => {
     if (!reviewId || !userId || !gameId) {
         throw new Error("Missing inputs");
     }
 
-
     const gamesCollection = await games();
-
 
     let game = await gamesCollection.findOne({ game_id: Number(gameId) });
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
@@ -250,23 +245,20 @@ export const addDislike = async (reviewId,userId,gameId) => {
         throw new Error('No reviews for this game');
     }
 
-
     let reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
     if (reviewIndex === -1) {
         throw new Error(`Review with ID ${reviewId} not found.`);
     }
 
-
     const review = reviews[reviewIndex];
     const existingLike = review.likes.find(like => like.user_id == userId);
     if (existingLike) {
-        await removeLike(reviewId,userId,gameId);
+        await removeLike(reviewId, userId, gameId);
     }
     const existingDislike = review.dislikes.find(dislike => dislike.user_id == userId);
     if (existingDislike) {
-        return await removeDislike(reviewId,userId,gameId);;
+        return await removeDislike(reviewId, userId, gameId);;
     }
-
 
     const newDislike = {
         user_id: userId,
@@ -274,12 +266,10 @@ export const addDislike = async (reviewId,userId,gameId) => {
     };
     review.dislikes.push(newDislike);
 
-
     const updateResult = await gamesCollection.updateOne(
         { game_id: Number(gameId), "reviews.user_id": reviewId },
         { $set: { "reviews.$.dislikes": review.dislikes } }
     );
-
 
     if (updateResult.modifiedCount === 0) {
         throw new Error('Failed to update likes for the review.');
@@ -293,13 +283,12 @@ export const addDislike = async (reviewId,userId,gameId) => {
         throw new Error('No reviews for this game');
     }
 
-
     reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
     if (reviewIndex === -1) {
         throw new Error(`Review with ID ${reviewId} not found.`);
     }
     return reviews[reviewIndex];
-    
+
 }
 
 
@@ -308,10 +297,7 @@ export const removeDislike = async (reviewId, userId, gameId) => {
         throw new Error("Missing inputs");
     }
 
-
     const gamesCollection = await games();
-
-
     let game = await gamesCollection.findOne({ game_id: Number(gameId) });
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
 
@@ -321,24 +307,19 @@ export const removeDislike = async (reviewId, userId, gameId) => {
         throw new Error('No reviews for this game');
     }
 
-
     let reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
     if (reviewIndex === -1) {
         throw new Error(`Review with ID ${reviewId} not found.`);
     }
 
-
     const review = reviews[reviewIndex];
-
 
     const existingDislike = review.dislikes.findIndex(dislike => dislike.user_id == userId);
     if (existingDislike === -1) {
         return review;
     }
 
-
     review.dislikes.splice(existingDislike, 1);
-
 
     const updateResult = await gamesCollection.updateOne(
         { game_id: Number(gameId), "reviews.user_id": reviewId },
@@ -350,7 +331,7 @@ export const removeDislike = async (reviewId, userId, gameId) => {
         throw new Error('Failed to update likes for the review.');
     }
 
-    
+
     game = await gamesCollection.findOne({ game_id: Number(gameId) });
     if (!game) throw new Error(`Game with ID ${gameId} not found.`);
 
@@ -358,7 +339,6 @@ export const removeDislike = async (reviewId, userId, gameId) => {
     if (!reviews || reviews.length === 0) {
         throw new Error('No reviews for this game');
     }
-
 
     reviewIndex = reviews.findIndex(review => review.user_id == reviewId);
     if (reviewIndex === -1) {

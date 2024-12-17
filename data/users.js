@@ -43,7 +43,7 @@ export const signUpUser = async (
         password: hashedPassword,
         likedGames: [],
         followedUsers: [],
-        reviews:[]
+        reviews: []
     };
 
     const insertInfo = await usersCollection.insertOne(newUser);
@@ -54,8 +54,6 @@ export const signUpUser = async (
     console.log('Registration completed successfully.');
     return { registrationCompleted: true };
 };
-
-
 
 export const signInUser = async (
     userId,

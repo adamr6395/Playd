@@ -1,23 +1,8 @@
 import { games } from '../config/mongoCollections.js';
-import {ObjectId} from 'mongodb';
+import { ObjectId } from 'mongodb';
 import axios from "axios";
 
-export const createGame = async (game_id,name,cover,genres,summary,rating) => {
-
-  // if (typeof name != "string") throw "name sucks";
-  // if (typeof cover != "string") throw "cover sucks";
-  // if (!Array.isArray(genres)) throw "genres suck";
-  // if (typeof summary != "string") throw "summary sucks";
-  // if (typeof rating != "number") throw "rating sucks";
-
-  // name = name.trim();
-  // cover = cover.trim();
-  // summary = summary.trim();
-
-  // for(let i = 0; i < genres.length; i += 1){
-  //   if(typeof genres[i] != "string" || genres[i].trim() == "") throw "one of these genres sucks";
-  //   genres[i] = genres[i].trim();
-  // }
+export const createGame = async (game_id, name, cover, genres, summary, rating) => {
 
   let newGame = {
     game_id,
@@ -30,10 +15,10 @@ export const createGame = async (game_id,name,cover,genres,summary,rating) => {
     score: '0/5',
     total: 0
   }
-  const gamesCollection = await games ();
+  const gamesCollection = await games();
   const insertInfo = await gamesCollection.insertOne(newGame);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw new Error ('Could not add game');
+    throw new Error('Could not add game');
   return newGame;
 }
 export const searchGamesByTitle = async (title) => {
@@ -61,7 +46,7 @@ export const searchGamesByTitle = async (title) => {
 export const isInDB = async (id) => {
   const gamesCollection = await games();
   const game = await gamesCollection.findOne({ game_id: Number(id) });
-  if(!game){
+  if (!game) {
     return false;
   }
   return true;
@@ -89,10 +74,9 @@ export const getGameById = async (id) => {
       },
     })
     let game = result.data[0];
-    //console.log(game);
     if (game.cover && game.cover.url) {
       if (game.rating && typeof game.rating === 'number') {
-        game.rating = game.rating.toFixed(2); 
+        game.rating = game.rating.toFixed(2);
       }
       let create = await createGame(game.id, game.name, game.cover.url, game.genres, game.summary, game.rating);
       return create;
@@ -171,12 +155,12 @@ export const getPopularGames = async () => {
   return results.data;
 };
 export const getScore = async () => {
-  const gamesCollection = await games ();
+  const gamesCollection = await games();
   const score = await gamesCollection.find({}).sort({ score: -1 }).limit(10).toArray();
   return score;
 }
 export const getAllGames = async () => {
   const gamesCollection = await games();
-  const allGames = await gamesCollection.find({}).toArray();  
+  const allGames = await gamesCollection.find({}).toArray();
   return allGames;
 };

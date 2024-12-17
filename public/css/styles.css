@@ -195,18 +195,18 @@ form button:hover {
 }
 
 /* Link under forms */
-form + p {
+form+p {
   text-align: center;
   margin-top: 15px;
 }
 
-form + p a {
+form+p a {
   color: #00bcd4;
   text-decoration: none;
   font-weight: bold;
 }
 
-form + p a:hover {
+form+p a:hover {
   color: #005f73;
   text-decoration: underline;
 }
@@ -416,30 +416,38 @@ article ul li {
 /* ========================= */
 
 .stars {
-  display: flex; /* Align the radio buttons horizontally */
-  gap: 10px; /* Add space between the buttons */
-  justify-content: center; /* Center-align the stars */
+  display: flex;
+  /* Align the radio buttons horizontally */
+  gap: 10px;
+  /* Add space between the buttons */
+  justify-content: center;
+  /* Center-align the stars */
   margin: 10px 0;
 }
 
 .stars input[type="radio"] {
-  display: none; /* Hide the default radio button */
+  display: none;
+  /* Hide the default radio button */
 }
 
 .stars label {
-  font-size: 2rem; /* Make the star symbols larger */
-  color: #ccc; /* Default star color */
+  font-size: 2rem;
+  /* Make the star symbols larger */
+  color: #ccc;
+  /* Default star color */
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
-.stars input[type="radio"]:checked + label,
+.stars input[type="radio"]:checked+label,
 .stars label:hover {
-  color: #fbc02d; /* Highlighted star color (yellow) */
+  color: #fbc02d;
+  /* Highlighted star color (yellow) */
 }
 
-.stars label:hover ~ label {
-  color: #ccc; /* Reset color for stars after hover */
+.stars label:hover~label {
+  color: #ccc;
+  /* Reset color for stars after hover */
 }
 
 
@@ -457,20 +465,30 @@ h1 {
 
 /* Style the ordered list */
 ol {
-  padding: 0; /* Remove default padding */
-  list-style-position: inside; /* Ensure numbers are inside the list item */
-  margin: 0 auto; /* Center the list container */
-  max-width: 800px; /* Limit width for better appearance */
+  padding: 0;
+  /* Remove default padding */
+  list-style-position: inside;
+  /* Ensure numbers are inside the list item */
+  margin: 0 auto;
+  /* Center the list container */
+  max-width: 800px;
+  /* Limit width for better appearance */
 }
 
 /* Style each game list item */
 ol li {
-  background-color: #fff; /* White box background */
-  border: 2px solid #ccc; /* Light gray border */
-  border-radius: 10px; /* Rounded corners */
-  margin: 10px 0; /* Space between items */
-  padding: 15px; /* Add spacing inside the box */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: #fff;
+  /* White box background */
+  border: 2px solid #ccc;
+  /* Light gray border */
+  border-radius: 10px;
+  /* Rounded corners */
+  margin: 10px 0;
+  /* Space between items */
+  padding: 15px;
+  /* Add spacing inside the box */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
@@ -497,7 +515,8 @@ ol li:hover {
 
 /* Game images */
 .game img {
-  width: 100px; /* Small thumbnail size */
+  width: 100px;
+  /* Small thumbnail size */
   height: auto;
   border-radius: 8px;
   border: 2px solid #ddd;
@@ -506,7 +525,8 @@ ol li:hover {
 }
 
 .game img:hover {
-  transform: scale(1.1); /* Slight zoom effect */
+  transform: scale(1.1);
+  /* Slight zoom effect */
 }
 
 /* ========================= */
@@ -599,31 +619,36 @@ ol li:hover {
 .profile-container a:hover {
   background-color: lightblue;
 }
-.stars{
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
+
+.stars {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
 
 }
-.stars input{
+
+.stars input {
   display: none;
 }
 
-.stars label{
+.stars label {
   font-size: xx-large;
 }
 
 .stars label:hover,
-.stars label:hover ~label,
-.stars input:checked ~label {
+.stars label:hover~label,
+.stars input:checked~label {
   color: yellow;
-} 
-.review{
+}
+
+.review {
   text-align: center;
 }
-.submit-review{
+
+.submit-review {
   text-align: center;
 }
-.formLabel{
+
+.formLabel {
   text-align: center;
 }

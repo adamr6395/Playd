@@ -46,13 +46,12 @@ router.get('/create', requireAuthentication('/signinuser'), (req, res) => {
 });
 
 router.post('/create', requireAuthentication('/signinuser'), async (req, res) => {
-    
+
     const name = xss(req.body.name);
     const description = xss(req.body.description);
     const userId = xss(req.session.user.userId);
 
     try {
-        console.log("J");
         const newList = await listsData.createList(name, description, userId);
         res.redirect('/gamelist');
     } catch (e) {
@@ -88,7 +87,7 @@ router.get('/:id', requireAuthentication('/signinuser'), async (req, res) => {
 router.post('/:listId/addGame', requireAuthentication('/signinuser'), async (req, res) => {
     const listId = xss(req.params.listId);
     const gameId = xss(req.body.gameId);
-    
+
     try {
         let gameInfo = await gamesData.getGameById(gameId);
         if (!gameInfo) {
