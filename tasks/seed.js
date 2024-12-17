@@ -4,16 +4,19 @@ import * as games from '../data/games.js';
 import * as reviews from '../data/reviews.js';
 import axios from "axios";
 
+
 const db = await dbConnection();
 await db.dropDatabase();
 await db.collection('games').deleteMany({});
 await db.collection('users').deleteMany({});
+
 
 const adam = await users.signUpUser('Adam','Ray','adamr','P@ssword1');
 const grant = await users.signUpUser('Grant','Reinecke','grantr','P@ssword1');
 const alaa = await users.signUpUser('Alaa','Issa','alaai','P@ssword1');
 const nicco = await users.signUpUser('Nicco','Carleton','niccoc','P@ssword1');
 const sam = await users.signUpUser('Samuel','Preston','samuelp','P@ssword1');
+
 
 export const getPopularGames = async () => {
     let results = await axios.post(`https://api.igdb.com/v4/games`, `fields id,name, genres.name, summary, rating, cover.url; sort rating desc; limit 50;`, {
@@ -29,17 +32,19 @@ export const getPopularGames = async () => {
         game.rating = game.rating.toFixed(2);
       }
     });
-  
+ 
     return results.data;
   };
+
 
 const popularGames = await getPopularGames();
 console.log('seed');
 
+
 for(let x = 0; x < popularGames.length; x++){
     let inDB = await games.isInDB(popularGames[x].id);
     if(!inDB){
-    await games.createGame(popularGames[x].id,popularGames[x].name,popularGames[x].cover_url,popularGames[x].genres,popularGames[x].summary,popularGames[x].rating);
+    await games.createGame(popularGames[x].id,popularGames[x].name,popularGames[x].cover.url,popularGames[x].genres,popularGames[x].summary,popularGames[x].rating);
     if(x % 2 === 0){
         await reviews.addReview('adamr',popularGames[x].id,4,'Amazing Game!');
         await reviews.addLike('adamr','adamr',popularGames[x].id);
@@ -71,6 +76,7 @@ for(let x = 0; x < popularGames.length; x++){
         await reviews.addDislike('samuelp','niccoc',popularGames[x].id);
         await reviews.addDislike('samuelp','grantr',popularGames[x].id);
         await reviews.addDislike('samuelp','samuelp',popularGames[x].id);
+
 
     }
     else{
@@ -110,4 +116,8 @@ for(let x = 0; x < popularGames.length; x++){
 
 
 
+
+
+
 await closeConnection();
+
