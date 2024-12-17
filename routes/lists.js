@@ -97,7 +97,6 @@ router.get('/:id', requireAuthentication('/signinuser'), async (req, res) => {
 router.post('/:listId/addGame', requireAuthentication('/signinuser'), async (req, res) => {
     const listId = req.params.listId;
     const gameId = req.body.gameId;
-
     try {
         let gameInfo = await gamesData.getGameById(gameId);
         if (!gameInfo) {
@@ -107,11 +106,25 @@ router.post('/:listId/addGame', requireAuthentication('/signinuser'), async (req
         res.redirect(`/gamelist/${listId}`);
     } catch (e) {
         console.log('Error adding game to list:', e.message);
-        res.status(404).render('error', {
-            isServerError: true,
-            title: 'Error',
-            errorMessage: 'Game Id not found',
-        });
+        try {
+            const list = await listsData.getListById(listId);
+            const allGames = await gamesData.getAllGames();
+
+            res.status(400).render('listdetails', {
+                title: `List: ${list.name}`,
+                user: req.session.user,
+                list: list,
+                allGames: allGames,
+                error: 'Failed to add game to the list put in the correct gameId.',
+            });
+        } catch (fetchError) {
+            console.error('Error fetching list details:', fetchError.message);
+            res.status(500).render('error', {
+                isServerError: true,
+                title: 'Error',
+                errorMessage: 'An unexpected error occurred while loading the list details.',
+            });
+        }
     }
 });
 
