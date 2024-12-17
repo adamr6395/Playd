@@ -8,15 +8,11 @@ import xss from 'xss';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    
-    const { firstName, lastName, role, userId } = req.session.user;
-    console.log("HEY!");
-    console.log(`Fetching used: ${userId}`); // Debug log
-    const user = await userData.getUserById(userId);
 
-    //console.log("My name is ",user);
-    //const userId = req.session.user._id;
     try {
+        
+    //const { firstName, lastName, role, userId } = req.session.user;
+    //const user = await userData.getUserById(userId);
         if (!req.session.user) {
             return res.status(401).render('error', {
                 isServerError: true,
@@ -25,14 +21,9 @@ router.get('/', async (req, res) => {
             });
         }
 
-        
         const { firstName, lastName, role, userId } = req.session.user;
-        //console.log(req.session.user)
-        //const userId = req.session.user.userId;  
-        const user = await userData.getUserById(userId); 
+        const user = await userData.getUserById(userId);
         const userLists = await listsData.getListsByUser(userId);
-
-        console.log(userLists); 
 
         res.render('gamelist', {
             title: `${user.firstName}'s Game Lists`,
@@ -57,16 +48,16 @@ router.get('/create', (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-    const { name, description } = req.body;
-    const { firstName, lastName, role, userId } = req.session.user;
-    //const userId = req.session.user.userId;
-    console.log("EEEEEEEEE");
-    console.log(userId);
+    //const { name, description } = req.body;
+    //const { firstName, lastName, role, userId } = req.session.user;
 
+    const name = xss(req.body.name);
+    const description = xss(req.body.description);
+    const userId = xss(req.session.user.userId);
     try {
         console.log("J");
         const newList = await listsData.createList(name, description, userId);
-        res.redirect('/gamelist');  
+        res.redirect('/gamelist');
     } catch (e) {
         res.status(400).render('error', {
             isServerError: true,
@@ -77,11 +68,11 @@ router.post('/create', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    console.log(req.params);
-    const listId = req.params.id;
+
+    const listId = xss(req.params.id);
     try {
         const list = await listsData.getListById(listId);
-        const allGames = await gamesData.getAllGames(); 
+        const allGames = await gamesData.getAllGames();
 
         res.render('listdetails', {
             title: `List: ${list.name}`,
@@ -99,16 +90,16 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/:listId/addGame', async (req, res) => {
-    const listId = req.params.listId;
-    const gameId = req.body.gameId;
+    const listId = xss(req.params.listId);
+    const gameId = xss(req.body.gameId);
 
     try {
         let gameInfo = await gamesData.getGameById(gameId);
-        if(!gameInfo){
+        if (!gameInfo) {
             throw new Error("Invalid Game Id");
         }
         await listsData.addGameToList(listId, gameId);
-        res.redirect(`/gamelist/${listId}`);  
+        res.redirect(`/gamelist/${listId}`);
     } catch (e) {
         console.log('Error adding game to list:', e.message);
         res.status(404).render('error', {
@@ -132,7 +123,7 @@ router.post('/:listId/share', async (req, res) => {
         const sharedWithArray = sharedWith
             ? sharedWith.split(',').map((id) => id.trim()).filter((id) => id !== '')
             : [];
-        
+
         await listsData.shareList(listId, sharedStatus, sharedWithArray);
         res.redirect(`/lists/${listId}`);
     } catch (e) {

@@ -73,9 +73,12 @@
     {{/if}}
     <div id="error-container" class = "error-container"></div>
     <form method="POST" id="myForm">
-		<label id = 'formLabel'>
+        <div class="formLabel">
+            <label id = 'formLabel'>
 			Leave a review:
-		</label>
+		    </label>
+        </div>
+		
             <div class="stars">
                 <input type="radio" id="5stars" name="stars" value="5">
                 <label for="5stars">&#9055;</label>
@@ -90,6 +93,11 @@
             </div>
             <div class="review"><textarea name="review" id="review"></textarea></div>
 			<button type="submit">Post</button>
+             <div class="review"><textarea name="review" id="review"></textarea></div>
+             <div class="submit-review">
+                <button type="submit">Post</button>
+             </div>
+			
 	</form>
     {{/if}}
 </article>

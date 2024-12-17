@@ -599,3 +599,31 @@ ol li:hover {
 .profile-container a:hover {
   background-color: lightblue;
 }
+.stars{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+
+}
+.stars input{
+  display: none;
+}
+
+.stars label{
+  font-size: xx-large;
+}
+
+.stars label:hover,
+.stars label:hover ~label,
+.stars input:checked ~label {
+  color: yellow;
+} 
+.review{
+  text-align: center;
+}
+.submit-review{
+  text-align: center;
+}
+.formLabel{
+  text-align: center;
+}

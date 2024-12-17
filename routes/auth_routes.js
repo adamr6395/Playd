@@ -2,6 +2,7 @@ import { signInUser, signUpUser, getUserById, addFollowedUser } from '../data/us
 import { getGameById } from '../data/games.js';
 import express from 'express';
 import { redirectAuthenticated, requireAuthentication } from '../middleware.js';
+import xss from 'xss';
 
 const router = express.Router();
 
@@ -13,7 +14,11 @@ router
     })
     .post(async (req, res) => {
         try {
-            const { firstName, lastName, userId, password, role } = req.body;
+            //const { firstName, lastName, userId, password, role } = req.body;
+            const firstName = xss(req.body.firstName);
+            const lastName = xss(req.body.lastName);
+            const userId = xss(req.body.userId);
+            const password = xss(req.body.password);
             const result = await signUpUser(firstName, lastName, userId, password, role);
 
             if (result.registrationCompleted) {
@@ -41,7 +46,9 @@ router
         res.render('signinuser', { user: req.session.user, title: 'Sign In' });
     })
     .post(async (req, res) => {
-        const { userId, password } = req.body;
+        //const { userId, password } = req.body;
+        const userId = xss(req.body.userId);
+        const password = xss(req.body.password);
         try {
             const user = await signInUser(userId, password);
 
@@ -62,8 +69,9 @@ router
     });
 
 router.route('/user').get(requireAuthentication('/signinuser'), async (req, res) => {
-    const { firstName, lastName, role, userId } = req.session.user;
-    
+    const { firstName, lastName, role} = req.session.user;
+    const userId = xss(req.session.user.userId);
+
     try {
         console.log(`Fetching user: ${userId}`); // Debug log
         const user = await getUserById(userId);
@@ -72,7 +80,7 @@ router.route('/user').get(requireAuthentication('/signinuser'), async (req, res)
         const likedGames = user.likedGames
             ? await Promise.all(user.likedGames.map(async (gameId) => {
                 try {
-                    return await getGameById(gameId);
+                    return await getGameById(xss(gameId));
                 } catch (e) {
                     console.warn(`Skipping invalid game ID: ${gameId}`);
                     return null;
@@ -80,7 +88,7 @@ router.route('/user').get(requireAuthentication('/signinuser'), async (req, res)
             })).then(games => games.filter(game => game)) // Remove nulls
             : [];
 
-        
+
         const followedUsers = user.followedUsers || [];
 
         console.log('Liked games:', likedGames); // Debug log
@@ -115,9 +123,9 @@ router.route('/signoutuser').get(requireAuthentication('/signinuser'), async (re
 });
 
 router.post('/follow', async (req, res) => {
-    let { userIdToFollow } = req.body;
-    const currentUserId = req.session.user.userId;
-    
+
+    const userIdToFollow = xss(req.body.userIdToFollow);
+    const currentUserId = xss(req.session.user.userId);
 
     try {
         if (!userIdToFollow || typeof userIdToFollow !== 'string') {
@@ -150,14 +158,16 @@ router.post('/follow', async (req, res) => {
                 }
             })).then(games => games.filter(game => game)) // Remove nulls
             : [];
-        res.status(500).render('user', { error: e.message, title: 'User Profile', currentTime: new Date().toLocaleTimeString(),
+        res.status(500).render('user', {
+            error: e.message, title: 'User Profile', currentTime: new Date().toLocaleTimeString(),
             currentDate: new Date().toLocaleDateString(), user: req.session.user, firstName,
-            lastName, followedUsers, likedGames});
+            lastName, followedUsers, likedGames
+        });
     }
 });
 
 router.get('/profile/:userId', async (req, res) => {
-    const userId = req.params.userId;
+    const userId = xss(req.params.userId);
 
     try {
         const user = await getUserById(userId);
@@ -166,7 +176,7 @@ router.get('/profile/:userId', async (req, res) => {
         const likedGames = user.likedGames
             ? await Promise.all(user.likedGames.map(async (gameId) => {
                 try {
-                    return await getGameById(gameId);
+                    return await getGameById(xss(gameId));
                 } catch (e) {
                     console.warn(`Skipping invalid game ID: ${gameId}`);
                     return null;
@@ -177,7 +187,7 @@ router.get('/profile/:userId', async (req, res) => {
         const reviewsWithGameNames = user.reviews
             ? await Promise.all(user.reviews.map(async (review) => {
                 try {
-                    const game = await getGameById(review.game_id);
+                    const game = await getGameById(xss(review.game_id));
                     return { ...review, gameName: game ? game.name : 'Unknown Game' };
                 } catch (e) {
                     console.warn(`Skipping invalid game ID: ${review.game_id}`);
