@@ -4,11 +4,11 @@ If the user is logged in , and 'GET /user' endpoint is called, you will render t
 
 --}}
 <div id="userView">
-    <p id="welcome">Welcome {{firstName}} {{lastName}}.</p>
+    <p id="welcome">Welcome {{firstName}} {{lastName}}</p>
 </div>
 <div>
     <h2>Your Favorite Games</h2>
-    <ul>
+    <ul class="fav_games">
         {{#each likedGames}}
         <li>
             <a href="/getGame/{{this.game_id}}">
@@ -27,7 +27,7 @@ If the user is logged in , and 'GET /user' endpoint is called, you will render t
 </div>
 <div>
     <h2>Followed Users</h2>
-    <ul>
+    <ul class="followed_users">
         {{#each followedUsers}}
         <li><a href="/profile/{{this}}">{{this}}</a></li>
         {{/each}}

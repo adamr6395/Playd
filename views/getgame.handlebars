@@ -1,5 +1,5 @@
-<a href="/">Search for Another Game</a>
 <article>
+    <a href="/">Search for Another Game</a>
     <h1>{{game.name}}</h1>
     {{#if game.cover}}
         <img alt="{{this.name}} Poster" src="https:{{game.cover}}">
@@ -40,7 +40,7 @@
                     </h5>
             
                     <p>
-                         {{this.stars}} Stars
+                        {{this.stars}} Stars
                     </p>
                     <p>
                         Review: {{this.review}}
@@ -48,28 +48,26 @@
                     
                     <label for="like-button-{{this.user_id}}" id="like-count-{{this.user_id}}">{{this.likes.length}}</label>
                     <button id="like-button-{{this.user_id}}" 
-                     data-user-id="{{this.user_id}}"
-                     data-game-id="{{this.game_id}}"
-                     class="like-button {{#if isLiked}}liked{{else}}not-liked{{/if}}">Like</button>
+                        data-user-id="{{this.user_id}}"
+                        data-game-id="{{this.game_id}}"
+                        class="like-button {{#if isLiked}}liked{{else}}not-liked{{/if}}">Like</button>
                     <label for="dislike-button-{{this.user_id}}" id="dislike-count-{{this.user_id}}">{{this.dislikes.length}}</label>
-                     <button id="dislike-button-{{this.user_id}}" 
-                     data-user-id="{{this.user_id}}"
-                     data-game-id="{{this.game_id}}"
-                     class="dislike-button {{#if isDisliked}}disliked{{else}}not-disliked{{/if}}">Dislike</button>
-                  
+                        <button id="dislike-button-{{this.user_id}}" 
+                        data-user-id="{{this.user_id}}"
+                        data-game-id="{{this.game_id}}"
+                        class="dislike-button {{#if isDisliked}}disliked{{else}}not-disliked{{/if}}">Dislike</button>            
                 </li>
-            
             {{/each}}
             </ul>
         {{/if}}
     </section>
     {{#if user}}
     <button
-    id="favorite-button"
-    data-game-id="{{game.game_id}}"
-    class="{{#if isFavorited}}favorited{{else}}not-favorited{{/if}}">
-    {{#if isFavorited}}Unfavorite{{else}}Favorite{{/if}}
-</button>
+        id="favorite-button"
+        data-game-id="{{game.game_id}}"
+        class="{{#if isFavorited}}favorited{{else}}not-favorited{{/if}}">
+        {{#if isFavorited}}Unfavorite{{else}}Favorite{{/if}}
+    </button>
     {{#if error}}
     <div class="error-message" class="error-message">{{error}}</div>
     {{/if}}
@@ -90,7 +88,7 @@
                 <input type="radio" id="1star" name="stars" value="1">
                 <label for="1star">&#9055;</label>
             </div>
-             <div class="review"><textarea name="review" id="review"></textarea></div>
+            <div class="review"><textarea name="review" id="review"></textarea></div>
 			<button type="submit">Post</button>
 	</form>
     {{/if}}

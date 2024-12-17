@@ -129,6 +129,104 @@ header nav ul li a:hover {
   margin: 5px;
 }
 
+.home_header {
+  text-align: center;
+}
+
+/* ========================= */
+/* SIGN IN AND SIGN UP PAGES */
+/* ========================= */
+
+/* Container for forms */
+form {
+  background-color: #f7f9fc;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+form h1 {
+  text-align: center;
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Labels */
+form label {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* Input fields */
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+/* Submit button */
+form button {
+  background-color: #008ba3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #005f73;
+}
+
+/* Link under forms */
+form + p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+form + p a {
+  color: #00bcd4;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+form + p a:hover {
+  color: #005f73;
+  text-decoration: underline;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  display: block;
+  text-align: left;
+}
+
+#error-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
 /* ========================= */
 /* USER PROFILE PAGE */
 /* ========================= */
@@ -187,6 +285,26 @@ ul li img {
 ul li img:hover {
   transform: scale(1.1);
   border-color: #00bcd4;
+}
+
+.fav_games {
+  background-color: #f7f9fc;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.followed_users {
+  background-color: #f7f9fc;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* ========================= */
@@ -248,6 +366,11 @@ article {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+article a {
+  color: black;
+  text-align: center;
+}
+
 article h1 {
   font-size: 2rem;
   color: #333;
@@ -286,6 +409,149 @@ article ul li {
 
 #favorite-button:hover {
   background-color: #005f73;
+}
+
+/* ========================= */
+/* STARS RADIO BUTTONS */
+/* ========================= */
+
+.stars {
+  display: flex; /* Align the radio buttons horizontally */
+  gap: 10px; /* Add space between the buttons */
+  justify-content: center; /* Center-align the stars */
+  margin: 10px 0;
+}
+
+.stars input[type="radio"] {
+  display: none; /* Hide the default radio button */
+}
+
+.stars label {
+  font-size: 2rem; /* Make the star symbols larger */
+  color: #ccc; /* Default star color */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.stars input[type="radio"]:checked + label,
+.stars label:hover {
+  color: #fbc02d; /* Highlighted star color (yellow) */
+}
+
+.stars label:hover ~ label {
+  color: #ccc; /* Reset color for stars after hover */
+}
+
+
+/* ========================= */
+/* SEARCH RESULTS PAGE */
+/* ========================= */
+
+/* Center the Games Found title */
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin: 20px 0;
+}
+
+/* Style the ordered list */
+ol {
+  padding: 0; /* Remove default padding */
+  list-style-position: inside; /* Ensure numbers are inside the list item */
+  margin: 0 auto; /* Center the list container */
+  max-width: 800px; /* Limit width for better appearance */
+}
+
+/* Style each game list item */
+ol li {
+  background-color: #fff; /* White box background */
+  border: 2px solid #ccc; /* Light gray border */
+  border-radius: 10px; /* Rounded corners */
+  margin: 10px 0; /* Space between items */
+  padding: 15px; /* Add spacing inside the box */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for list items */
+ol li:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+}
+
+/* Game content (article inside li) */
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Game titles */
+.game h3 {
+  margin: 10px 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Game images */
+.game img {
+  width: 100px; /* Small thumbnail size */
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  margin-top: 10px;
+  transition: transform 0.3s ease;
+}
+
+.game img:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* ========================= */
+/* GAMELIST PAGE */
+/* ========================= */
+
+.gamelist_div {
+  text-align: center;
+}
+
+.gamelist_div a {
+  color: black;
+}
+
+.gamelist_ul {
+  background-color: lightgray;
+  border-radius: 30px;
+  padding-top: 5px;
+  padding-bottom: 8px;
+}
+
+.list_center {
+  text-align: center;
+}
+
+.list_center a {
+  color: black;
+}
+
+.internal_gl {
+  text-align: center;
+}
+
+.internal_gl a {
+  color: black;
+}
+
+.gamelist_gamelist {
+  background-color: #f7f9fc;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* ========================= */

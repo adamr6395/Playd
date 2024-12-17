@@ -1,18 +1,20 @@
-<h2>{{list.name}}</h2>
-<p>{{list.description}}</p>
-<h3>Games in this List</h3>
-<ul>
-    {{#each list.games}}
-    <li>{{this}} - <a href="/getgame/{{this}}">{{this.name}}View Game</a>
-    </li>
-    {{/each}}
-</ul>
+<div class="internal_gl">
+    <a href="/gamelist">Back to Game Lists</a>
+    <h2>{{list.name}}</h2>
+    <p>{{list.description}}</p>
+    <h3>Games in this List</h3>
+    <ul class="gamelist_gamelist">
+        {{#each list.games}}
+        <li>{{this}} - <a href="/getgame/{{this}}">{{this.name}}View Game</a>
+        </li>
+        {{/each}}
+    </ul>
 
-<h3>Add a Game</h3>
-<form action="/gamelist/{{list._id}}/addGame" method="POST">
-    <label for="gameId">Game ID:</label>
-    <input type="text" id="gameId" name="gameId" required>
-    <button type="submit">Add Game</button>
-</form>
+    <h3>Add a Game</h3>
+    <form action="/gamelist/{{list._id}}/addGame" method="POST">
+        <label for="gameId">Game ID:</label>
+        <input type="text" id="gameId" name="gameId" required>
+        <button type="submit">Add Game</button>
+    </form>
+</div>
 
-<a href="/gamelist">Back to Game Lists</a>
