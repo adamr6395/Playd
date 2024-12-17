@@ -122,7 +122,7 @@ router.route('/signoutuser').get(requireAuthentication('/signinuser'), async (re
 
 router.post('/follow', async (req, res) => {
 
-    const userIdToFollow = xss(req.body.userIdToFollow);
+    let userIdToFollow = xss(req.body.userIdToFollow);
     const currentUserId = xss(req.session.user.userId);
 
     try {
